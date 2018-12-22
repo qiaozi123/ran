@@ -57,8 +57,16 @@ class RankController extends Controller
                     if (!empty($item)){
                         if (strstr($item['link'],$this->mulu)){
                             $d=$d+1;
+                            $uaarr = file(public_path('ua.txt'));
+                            $ua = $str = str_replace(array("\r\n", "\r", "\n"), "", array_random($uaarr)); ;
                             $client = new Client();
-                            $client->get($item['jump']);
+
+                            $client->get($item['jump'],[
+                                'headers' => [
+                                'User-Agent' => $ua,
+                                'Accept'     => 'application/json',
+                                'X-Foo'      => ['Bar', 'Baz']
+                                ]]);
                             echo '点击'.$d.'<br>';
                         }
                     }
