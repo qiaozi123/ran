@@ -7,7 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Keyword extends Model
+class Msg extends Model
 {
-    protected $table ='keywords';
+    protected $table ='msg';
+
 }

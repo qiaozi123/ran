@@ -3,79 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Keyword;
-use GuzzleHttp\Client;
+use App\SearchEngines;
 use Illuminate\Http\Request;
-use Spatie\Browsershot\Browsershot;
-use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Facades\Auth;
 
 class RankController extends Controller
 {
-    public function index()
-    {
-        return view('index');
+    public function create(){
+        return view('rank.create');
     }
 
-    public function show()
-    {
-        $keyword = Keyword::all();
-
-        return view('list',compact('keyword'));
+    public function pc(){
+        $userid = Auth::user()->id;
+        $where = ['userid'=>$userid,'type'=>1];
+        $keyword = Keyword::where($where)->paginate(15);
+        $count =  Keyword::where($where)->get()->count();
+        return view('rank.PC.index',compact('keyword','count'));
     }
 
-    public function youhua($id)
+    public function pccreate()
     {
-        $keyword = Keyword::where(['id'=>$id])->first();
-        $this->mulu =  $keyword->mulu;
-        $i=1;
-        $d=1;
-        while (true){
-            $i=$i+1;
-            echo '展现量'.$i;
-            $url = 'http://www.baidu.com/s?wd='.urlencode($keyword->text).'&pn='.($keyword->pagenumber-1).'0&oq='.urlencode($keyword->text).'&tn=baiduhome_pg&ie=utf-8&rsv_idx=2&rsv_pq=a433278d00092133';
-            $client = new Client();
-            $html = $client->get($url)->getBody()->getContents();
-            $crawler = new Crawler();
-            $crawler->addHtmlContent($html);
+        $searchengines =  SearchEngines::all();
+        return view('rank.PC.create',compact('searchengines'));
+    }
 
-            $arr = $crawler->filter('#content_left > div')->each(function ($node,$i) use ($html) {
-                try
-                {
-                    $data['link'] = $node->filter('div > div.f13 > a.c-showurl')->text();
-                    $data['jump'] = $node->filter('div > h3 > a')->attr('href');
-                    return $data;
-                }
-                catch(\Exception $e)
-                {
-                    echo 'successfully'.'<br>';
-                    ob_flush();
-                    flush();
-                }
-            });
+    public function pcdocreate(Request $request)
+    {
+        $keywords = $request->input('keyword');
+        $dohost = $request->input('dohost');
+        $rank =  $request->input('rank');
+        $searchengines =  $request->input('searchengines');
+        $userid =  $request->input('userid');
 
-            if ($i%10==0){
-                foreach ($arr as $item){
-                    if (!empty($item)){
-                        if (strstr($item['link'],$this->mulu)){
-                            $d=$d+1;
-                            $uaarr = file(public_path('ua.txt'));
-                            $ua = $str = str_replace(array("\r\n", "\r", "\n"), "", array_random($uaarr)); ;
-                            $client = new Client();
-
-                            $client->get($item['jump'],[
-                                'headers' => [
-                                'User-Agent' => $ua,
-                                'Accept'     => 'application/json',
-                                'X-Foo'      => ['Bar', 'Baz']
-                                ]]);
-                            echo '点击'.$d.'<br>';
-                        }
-                    }
-                }
-            }
-            ob_flush();
-            flush();
+        if (empty($keywords)){
+            return '关键词不能为空';
+        }
+        if (empty($dohost)){
+            return '网址不能为空';
+        }
+        if (empty($rank)){
+            return '排名不能为空';
+        }
+        if (empty($searchengines)){
+            return '搜索引擎不能为空';
+        }
+        if (empty($userid)){
+            return 'userid不能为空';
+        }
+        $type =  1;
+        $keyword = new Keyword();
+        $keyword->keyword = $keywords;
+        $keyword->rank = $rank;
+        $keyword->dohost = $dohost;
+        $keyword->searchengines = $searchengines;
+        $keyword->type = $type;
+        $keyword->userid = $userid;
+        $bool =  $keyword->save();
+        if ($bool){
+            return 200;
+        }else{
+            return 500;
         }
     }
 
 
+
+    public function move(){
+        $userid = Auth::user()->id;
+        $where = ['userid'=>$userid,'type'=>2];
+        $keyword = Keyword::where($where)->paginate(15);
+        $count =  Keyword::where($where)->get()->count();
+        return view('rank.move.index',compact('keyword','count'));
+    }
 }

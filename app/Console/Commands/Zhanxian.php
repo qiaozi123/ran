@@ -7,6 +7,8 @@ use App\RankUpdate;
 use Illuminate\Console\Command;
 use Spatie\Browsershot\Browsershot;
 use Symfony\Component\DomCrawler\Crawler;
+use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
 
 class Zhanxian extends Command
 {
@@ -18,7 +20,7 @@ class Zhanxian extends Command
     protected $signature = 'zhanxian:start';
     private $totalPageCount;
     private $counter        = 1;
-    private $concurrency    = 10;  // 同时并发抓取
+    private $concurrency    = 200;  // 同时并发抓取
     /**
      * The console command description.
      *
@@ -43,19 +45,81 @@ class Zhanxian extends Command
      */
     public function handle()
     {
-        $newsUrl = 'https://m.toutiao.com/i6546884151050502660/';
+        ini_set('memory_limit','1280M');
+        $this->id = 10;
+        $keyword = Keyword::where(['id'=>$this->id])->first();
+        $this->mulu = $keyword->mulu;
+        for($i=0;$i<5000;$i++){
+            $this->url[] = 'http://www.baidu.com/s?wd='.urlencode($keyword->text).'&pn='.($keyword->pagenumber-1).'0&oq='.urlencode($keyword->text).'&tn=baiduhome_pg&ie=utf-8&rsv_idx=2&rsv_pq=a433278d00092133';
+        }
 
-        $html = Browsershot::url($newsUrl)
-            ->windowSize(480, 800)
-            ->userAgent('Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36')
-            ->mobile()
-            ->touch()
-            ->bodyHtml();
-        dd($html);
-        \Log::info($html);
+        $this->totalPageCount = count($this->url);
+        $client = new Client();
+        $requests = function ($total) use ($client) {
+            foreach ($this->url as $uri) {
+                yield function() use ($client, $uri) {
+                    return $client->getAsync($uri);
+                };
+            }
+        };
+        $pool = new Pool($client, $requests($this->totalPageCount), [
+            'concurrency' => $this->concurrency,
+            'fulfilled'   => function ($response, $index){
+                $this->index = $index;
+                $this->info('第'.$index.'展现');
+                $this->
+//                $crawler = new Crawler();
+//                $html = $response->getBody()->getContents();
+//                $crawler->addHtmlContent($html);
+//                $arr = $crawler->filter('#content_left > div')->each(function ($node,$i) use ($html) {
+//                    try
+//                    {
+//                        $data['link'] = $node->filter('div > div.f13 > a.c-showurl')->text();
+//                        $data['jump'] = $node->filter('div > h3 > a')->attr('href');
+//                        return $data;
+//                    }
+//                    catch(\Exception $e)
+//                    {
+//                        echo '';
+//
+//                    }
+//                });
+//
+//                foreach ($arr as $item){
+//                    if (!$item==null){
+//                        if (strstr($item['link'],$this->mulu)){
+//                            $click = new \App\Click();
+//                            $click->url = $item['jump'];
+//                            $click->keyword_id = $this->id;
+//                            $bool = $click->save();
+//                            if ($bool){
+//                                echo 'insert success';
+//                            }else{
+//                                echo 'insert fail';
+//                            }
+//                        }
+//                    }
+//                }
+
+                $this->countedAndCheckEnded();
+            },
+            'rejected' => function ($reason, $index){
+//                    log('test',"rejected" );
+//                    log('test',"rejected reason: " . $reason );
+                $this->countedAndCheckEnded();
+            },
+        ]);
+
+        $promise = $pool->promise();
+        $promise->wait();
+
     }
 
-
-
+    public function countedAndCheckEnded()
+    {
+        if ($this->counter < $this->totalPageCount){
+            return;
+        }
+    }
 }
 

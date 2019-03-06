@@ -48,8 +48,8 @@ class Shoulu extends Command
         ini_set('memory_limit', '128M');
         $web = 'https://www.pengfu.com';
         $mulu = 'https://www.pengfu.com/clu';
-        for ($i=0; $i <20 ; $i++) {
-            $urls[$i] ='http://www.baidu.com/s?wd=site%3Awww.pengfu.com%20inurl%3Aclu&pn='.$i.'0&oq=site%3Awww.pengfu.com%20inurl%3Aclu&ct=2097152&tn=baiduhome_pg&ie=utf-8&si=www.pengfu.com&rsv_idx=2&rsv_pq=edb8723f00118009&rsv_t=f0bdEQOPEp5ozru4EraHyl40tiBsvRiaBD4ZheGHxHyxjWlCgCIVT1o2U9mDR3PXLR1U&gpc=stf%3D1544261480%2C1544866280%7Cstftype%3D1&tfflag=1';
+        for ($i=0; $i <2 ; $i++) {
+            $urls[$i] ='http://www.baidu.com/s?wd=site%3Awww.pengfu.com%20inurl%3Apk&pn='.$i.'0&oq=site%3Awww.pengfu.com%20inurl%3Aclu&ct=2097152&tn=baiduhome_pg&ie=utf-8&si=www.pengfu.com&rsv_idx=2&rsv_pq=edb8723f00118009&rsv_t=f0bdEQOPEp5ozru4EraHyl40tiBsvRiaBD4ZheGHxHyxjWlCgCIVT1o2U9mDR3PXLR1U&gpc=stf%3D1544261480%2C1544866280%7Cstftype%3D1&tfflag=1';
         }
 
        QueryList::multiGet($urls)

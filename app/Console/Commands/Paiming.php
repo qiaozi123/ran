@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Keyword;
+use App\Ranklog;
 use GuzzleHttp\Client;
 use GuzzleHttp\Pool;
 use Illuminate\Console\Command;
@@ -44,87 +45,114 @@ class Paiming extends Command
      */
     public function handle()
     {
-        $this->url = Keyword::where('id','=','161')->get()->toArray();
+        $this->url = Keyword::all()->toArray();
         $this->mulu = $this->url[0]['mulu'];
-        foreach ($this->url as $key=>$item){
+
+        foreach ($this->url as $key=>$one){
+            $this->info( '更新《'.$one['text'].'》的排名');
             for ($i=0;$i<20;$i++){
-                $newurl[$key][$i]['id'] = $item['id'];
+                $newurl[$key][$i]['id'] = $one['id'];
                 $newurl[$key][$i]['pagenumber'] = $i;
-                $newurl[$key][$i]['text'] = $item['text'];
-                $newurl[$key][$i]['mulu'] = $item['mulu'];
-                $newurl[$key][$i]['url'] = 'http://www.baidu.com/s?wd='.urlencode($item['text']).'&pn='.$i.'0&oq='.urlencode($item['text']).'&tn=baiduhome_pg&ie=utf-8&rsv_idx=2&rsv_pq=a433278d00092133';
+                $newurl[$key][$i]['text'] = $one['text'];
+                $newurl[$key][$i]['mulu'] = $one['mulu'];
+                $newurl[$key][$i]['url'] = 'http://www.baidu.com/s?wd='.urlencode($one['text']).'&pn='.$i.'0&oq='.urlencode($one['text']).'&tn=baiduhome_pg&ie=utf-8&rsv_idx=2&rsv_pq=a433278d00092133';
+            }
 
+            foreach ($newurl as $item){
+                foreach ($item as $value){
+                    $this->alldata[] = $value;
+                }
+            }
+
+            $bool = self::getpagenumer($this->alldata,$one,$this->mulu);
+            if ($bool){
+                continue ;
             }
         }
+    }
 
 
-        foreach ($newurl as $item){
-            foreach ($item as $value){
-                $this->alldata[] = $value;
+    //处理排名页数 如果存在执行 rank计算
+    public function getpagenumer($alldata,$one,$mulu)
+    {
+
+        $this->alldata = $alldata;
+        $pagenumber =null;
+        foreach ($alldata as $page=>$item){
+            $client = new Client();
+            $html =  $client->get($item['url'])->getBody()->getContents();
+            $this->page = $page;
+            $find = strpos($html,'https://www.pengfu.com/clu');
+            $this->info($find);
+            if ($find == false){
+                $this->info('第'.$this->alldata[$page]['pagenumber'].'页没有收录');
+                continue ;
             }
-        }
 
-        $this->totalPageCount = count($this->alldata);
-        $client = new Client();
-        $requests = function ($total) use ($client) {
-            foreach ($this->alldata as $uri) {
-                yield function() use ($client, $uri) {
-                    $this->trueurl = $uri['url'];
-                    return $client->getAsync($this->trueurl);
-                };
+            if ($find>0)
+            {
+                $pagenumber = $this->alldata[$page]['pagenumber'];
+                $crawler = new Crawler();
+                $crawler->addHtmlContent($html);
+                $arr = $crawler->filter('#content_left > div')->each(function ($node,$i) use ($html) {
+                    try
+                    {
+                        $data['link'] = $node->filter('div > div.f13 > a.c-showurl')->text();
+                        $data['jump'] = $node->filter('div > h3 > a')->attr('href');
+                        return $data;
+                    }
+                    catch(\Exception $e)
+                    {
+                        $this->info('第'.$this->alldata[$this->page]['pagenumber'].'页排名数据抓取失败');
+                    }
+                });
+
+               $bool = self::getrank($arr,$mulu,$page,$one);
+
+               if ($bool ==2){
+                   return true;
+               }
             }
-        };
-
-        $pool = new Pool($client, $requests($this->totalPageCount), [
-            'concurrency' => $this->concurrency,
-            'fulfilled'   => function ($response, $index){
-                $this->index = $index;
-                echo '获取《'.$this->trueurl.'》的排名'.PHP_EOL;
-                $http = $response->getBody()->getContents();
-                $find = strpos($http,'https://www.pengfu.com/clu',1);
-                dd($http);
-                if (!$find){
-                    $this->info('第'.$this->alldata[$index]['pagenumber'].'页没有');
-                }else{
-                    $crawler = new Crawler();
-                    $crawler->addHtmlContent($http);
-                    if ($response->getStatusCode() ==200){
-                        $arr = $crawler->filter('#content_left > div')->each(function ($node,$i) use ($http) {
-//                        try
-//                        {
-                            $data['link'] = $node->filter('div > div.f13 > a.c-showurl')->text();
-                            return $data;
-//                        }
-//                        catch(\Exception $e)
-//                        {
-//                            $this->error('第'.$this->alldata[$this->index]['pagenumber'].'页排名数据抓取失败');
-//                        }
-                        });
-                        dd($arr);
-                        foreach ($arr as $key=>$item){
-                            $this->info($item['link']);
-                            sleep(1);
-                            if (strstr($item['link'],$this->mulu)){
-                                dd('第'.$this->alldata[$index]['pagenumber'].'页'.'第'.($key+1).'位');
-                            }else{
-                                $this->info('第'.$this->alldata[$index]['pagenumber'].'页,第'.($key+1).'行没有');
-                            }
-                        }
+            if ($page==count($alldata)-1){
+                if ($pagenumber==null){
+                    $this->info('没有找到数据');
+                    $rank = new Ranklog();
+                    $rank->pagenumber =  999;
+                    $rank->keyword_id =  $one['id'];
+                    $rank->rank =  999;
+                    $bool = $rank->save();
+                    if ($bool){
+                        $this->info('排名在20页之外');
+                        return true;
+                    }else{
+                        $this->info('排名在20页之外,插入失败');
                     }
                 }
+            }
+        }
+    }
 
-                $this->countedAndCheckEnded();
-            },
-            'rejected' => function ($reason, $index){
-//                    log('test',"rejected" );
-//                    log('test',"rejected reason: " . $reason );
-                $this->countedAndCheckEnded();
-            },
-        ]);
 
-        $promise = $pool->promise();
-        $promise->wait();
-
+    public function getrank($arr,$mulu,$page,$currendata)
+    {
+        foreach ($arr as $key=>$item){
+            if (!empty($item)){
+                if (strstr($item['link'],$mulu)){
+                    $this->info('排名在第'.($this->alldata[$page]['pagenumber']+1).'页,第'.($key+1).'行');
+                    $rank = new Ranklog();
+                    $rank->pagenumber =  $this->alldata[$this->page]['pagenumber']+1;
+                    $rank->keyword_id =  $currendata['id'];
+                    $rank->rank =  $key+1;
+                    $bool = $rank->save();
+                    if ($bool){
+                        $this->info('排名更新插入成功');
+                        return 2;
+                    }else{
+                        $this->info('insert database fail');
+                    }
+                }
+            }
+        }
     }
 
     public function countedAndCheckEnded()
