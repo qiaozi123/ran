@@ -15,7 +15,7 @@
 <div class="x-body layui-anim layui-anim-up">
 
     <fieldset class="layui-elem-field">
-        <legend>系统信息</legend>
+        <legend>充值信息</legend>
         <div class="layui-field-box">
             <table class="layui-table">
                 <tbody>
