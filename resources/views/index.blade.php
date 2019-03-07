@@ -73,7 +73,7 @@
                         </a>
                     </li>
                     <li>
-                        <a _href="buy">
+                        <a _href="/buy">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>购买排名币</cite>
                         </a>

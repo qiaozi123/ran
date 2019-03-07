@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Price;
 use Illuminate\Http\Request;
 
 class RechargeController extends Controller
@@ -18,6 +19,9 @@ class RechargeController extends Controller
 
     public function buy()
     {
-        return view('recharge.buy');
+        $price = Price::all();
+        return view('recharge.buy',compact('price'));
     }
+
+
 }
