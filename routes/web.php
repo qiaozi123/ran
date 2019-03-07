@@ -19,14 +19,9 @@ Route::get('doregist', 'UserController@doregist');
 
 Route::get('/captcha', 'CaptchaController@captcha');
 
-
-
-Route::get('home', 'AdminController@index');
+Route::get('home', 'UserController@index');
 Route::get('pc', 'RankController@pc');
 Route::get('pc/create', 'RankController@pccreate');
-
-
-
 
 Route::get('move', 'RankController@move');
 
@@ -38,9 +33,7 @@ Route::get('buy', 'RechargeController@buy');
 Route::get('user/info', 'UserController@info');
 Route::get('user/update', 'UserController@update');
 
-
 Route::get('search', 'SearchController@index');
-
 
 Route::get('list', 'AdminController@show');
 Route::get('getrank/{id}', 'HomeController@index');

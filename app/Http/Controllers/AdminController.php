@@ -13,10 +13,11 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        return view('index');
+        $this->middleware('admin');
     }
+
 
     public function show()
     {

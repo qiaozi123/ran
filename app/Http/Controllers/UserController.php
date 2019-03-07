@@ -11,8 +11,20 @@ use Nexmo\Client\Exception\Validation;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        if (!Auth::check()){
+            return redirect('/');
+        }
+        return view('index');
+    }
+
     public function login()
     {
+        if (Auth::check()){
+            return redirect('home');
+        }
         return view('login');
     }
 
@@ -33,17 +45,20 @@ class UserController extends Controller
         $captcha = $request->input('captcha');
         $username = $request->input('username');
         $password = $request->input('password');
-
         $loginbool = Auth::attempt(['name'=>$username,'password'=>$password]);
+
         if ($loginbool){
             return redirect('/home');
         }else{
-            return redirect('/')->with('errors','用户名或密码不正确');
+            return redirect('/') ->withErrors(['用户名或密码不正确！']);
         }
     }
 
     public function regist()
     {
+        if (Auth::check()){
+            return redirect('home');
+        }
         return view('regist');
     }
 

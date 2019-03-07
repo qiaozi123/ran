@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class RankController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function create(){
         return view('rank.create');
     }
@@ -69,6 +74,7 @@ class RankController extends Controller
 
 
     public function move(){
+        dd('敬请期待');
         $userid = Auth::user()->id;
         $where = ['userid'=>$userid,'type'=>2];
         $keyword = Keyword::where($where)->paginate(15);

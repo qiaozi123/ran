@@ -8,6 +8,11 @@ use QL\QueryList;
 
 class SearchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function index(Request $request)
     {
         set_time_limit(0);

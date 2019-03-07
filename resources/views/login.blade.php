@@ -20,7 +20,9 @@
     <div class="message">登录</div>
     <div id="darkbannerwrap"></div>
     <div class="form-group">
+
         @if ($errors->any())
+
             <div class="alert alert-danger">
                 <ul style="color:red;">
                     @foreach ($errors->all() as $error)
