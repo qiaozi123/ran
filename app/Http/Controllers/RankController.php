@@ -11,7 +11,7 @@ class RankController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('pcdocreate');
     }
 
     public function create(){
