@@ -21,3 +21,13 @@ Route::Post('login','UserController@dologin');
 Route::post('/captcha/validate', 'CaptchaController@captchaValidate');
 Route::post('/pc/docreate', 'RankController@pcdocreate');
 Route::post('/user/update', 'UserController@updatepassword');
+
+
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {  //User接口
+    $api->group(['namespace' => 'App\Api\Controllers'], function ($api) {
+        $api->post('keyword','KeywordController@index');
+    });
+});
