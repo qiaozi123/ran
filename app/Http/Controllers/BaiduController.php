@@ -2,36 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Keyword;
+use App\Rank;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Nesk\Puphpeteer\Puppeteer;
 use QL\Ext\Baidu;
 use QL\QueryList;
-use Symfony\Component\DomCrawler\Crawler;
 
-class SearchController extends Controller
+class BaiduController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
-    public function index(Request $request)
-    {
+    public function pc(Request $request){
         set_time_limit(0);
-//        $keyword ='seo';
-//        $dohost = 'www.zhantengwang.com';
-        $keyword = $request->input('keyword');
-        $dohost = $request->input('dohost');
+        $keywordid = $request->input('keywordid');
+        $keyword = Keyword::find($keywordid);
+        if (empty($keyword)){
+            return '关键词不能为空';
+        }
+
         $ql = QueryList::getInstance();
         $ql->use(Baidu::class);
         $baidu = $ql->baidu(10);
-        $searcher = $baidu->search($keyword);
-        $countPage = 10;  // 获取搜索结果总页数
+        $searcher = $baidu->search($keyword->keyword);
+        $countPage = 80;  // 获取搜索结果总页数
         for ($page = 1; $page <= $countPage; $page++)
         {
             $data= $searcher->page($page);
+
             foreach ($data as $key=>$url){
                 $reallink = $this->get_real_url($url['link']);
-                if (strpos($reallink,$dohost) !== false){
+                $savedata[$page-1][$key]['title'] = $url['title'];
+                $savedata[$page-1][$key]['baidu_link'] = $url['link'];
+                $savedata[$page-1][$key]['real_url'] = $reallink;
+                $savedata[$page-1][$key]['page'] = $page;
+                $savedata[$page-1][$key]['keyword_id'] = $keywordid;
+                $savedata[$page-1][$key]['created_at'] = date('Y-m-d H:i:s');
+                $savedata[$page-1][$key]['updated_at'] = date('Y-m-d H:i:s');
+                if (strpos($reallink,$keyword->dohost) !== false){
                     if ($page==1){
                         $page=0;
                     }
@@ -43,10 +50,9 @@ class SearchController extends Controller
                 break ;
             }
         }
-        if (empty($rank)){
-            return '100+';
-        }else{
-            return $rank;
+        foreach ($savedata as $item){
+            $bool = DB::table('rank')->insert($item);
+            echo $bool;
         }
 
     }
@@ -71,22 +77,5 @@ class SearchController extends Controller
         }
         return $rewrite ;//输出http://tieba.baidu.com/p/1668410830
     }
-
-    public function baidu_move(Request $request)
-    {
-        $keyword = urlencode($request->input('keyword'));
-        $url = 'https://m.baidu.com/s?word='.$keyword.'&sa=vs_tab&sectab=video&isid=96DECE300483C5B315849&mod=0&async=1';
-        $html = QueryList::get($url)->getHtml();
-        $crawler = new Crawler($html);
-        $nodeValues = $crawler->filter(' #results > div:nth-child')->each(function (Crawler $node, $i) {
-            return $node->text();
-        });
-        dd($nodeValues);
-        $res = $crawler->filter('#results')->html();
-        dd($res);
-    }
-
-
-
 
 }
