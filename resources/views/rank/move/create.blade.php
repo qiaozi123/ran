@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.0</title>
+    <title>移动端添加排名</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -59,25 +59,25 @@
 
         </div>
 
-        <div class="layui-form-item">
-            <label for="username" class="layui-form-label">
-                <span class="x-red"></span>
-            </label>
-            <div class="layui-input-inline">
-                <input type="button"  required="" lay-verify="required"
-                       autocomplete="off" class="layui-input" style="background-color: green; color: white;"  value="检测排名报价" onclick="getrank()">
-            </div>
-        </div>
+        {{--<div class="layui-form-item">--}}
+            {{--<label for="username" class="layui-form-label">--}}
+                {{--<span class="x-red"></span>--}}
+            {{--</label>--}}
+            {{--<div class="layui-input-inline">--}}
+                {{--<input type="button"  required="" lay-verify="required"--}}
+                       {{--autocomplete="off" class="layui-input" style="background-color: green; color: white;"  value="检测排名报价" onclick="getrank()">--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
-        <div class="layui-form-item">
-            <label for="username" class="layui-form-label">
-                <span class="x-red"></span>排名结果
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" readonly id="rank" name="rank" required="" lay-verify="required"
-                       autocomplete="off" class="layui-input"  value="">
-            </div>
-        </div>
+        {{--<div class="layui-form-item">--}}
+            {{--<label for="username" class="layui-form-label">--}}
+                {{--<span class="x-red"></span>排名结果--}}
+            {{--</label>--}}
+            {{--<div class="layui-input-inline">--}}
+                {{--<input type="text" readonly id="rank" name="rank" required="" lay-verify="required"--}}
+                       {{--autocomplete="off" class="layui-input"  value="">--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
 </tbody>
 </table>
@@ -102,7 +102,7 @@
             console.log(data.field);
             $.ajax({
                 type:"post",//type可以为post也可以为get
-                url:"/api/pc/docreate",
+                url:"/api/m/docreate",
                 data:data.field,//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
                 dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
                 async:false,

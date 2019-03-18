@@ -9,5 +9,5 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Rank extends Model
 {
-    protected $table ='ranklog';
+    protected $table ='rank';
 }

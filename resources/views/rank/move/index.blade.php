@@ -22,7 +22,7 @@
 </div>
 <div class="x-body">
     <xblock>
-        <button class="layui-btn" onclick="x_admin_show('添加PC优化任务','{{url('move/create')}}')"><i class="layui-icon"></i>添加移动排名任务</button>
+        <button class="layui-btn" onclick="x_admin_show('添加移动优化任务','{{url('move/create')}}')"><i class="layui-icon"></i>添加移动排名任务</button>
         <span class="x-right" style="line-height:40px">共有数据：{{$count}} 条</span>
     </xblock>
     <table class="layui-table">

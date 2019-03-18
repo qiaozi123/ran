@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', 'UserController@login');
 Route::get('logout', 'UserController@logout');
 Route::get('dologin','UserController@dologin');
@@ -24,7 +25,7 @@ Route::get('pc', 'RankController@pc');
 Route::get('pc/create', 'RankController@pccreate');
 
 Route::get('move', 'RankController@move');
-
+Route::get('move/create', 'RankController@movecreate');
 
 Route::get('recharge', 'RechargeController@index');
 Route::get('buy', 'RechargeController@buy');
@@ -34,8 +35,14 @@ Route::get('user/info', 'UserController@info');
 Route::get('user/update', 'UserController@update');
 
 Route::get('search', 'SearchController@index');
+Route::get('baidu/m/search', 'SearchController@baidu_move');
 
 Route::get('list', 'AdminController@show');
 Route::get('getrank/{id}', 'HomeController@index');
 Route::get('youhua/{id}', 'RankController@youhua');
 Route::get('zzz', 'RankController@zzz');
+
+
+Route::get('baidu', 'BaiduController@pc');
+
+

@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::Post('login','UserController@dologin');
 Route::post('/captcha/validate', 'CaptchaController@captchaValidate');
 Route::post('/pc/docreate', 'RankController@pcdocreate');
+Route::post('/m/docreate', 'RankController@movedocreate');
 Route::post('/user/update', 'UserController@updatepassword');
 
 
