@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Keyword;
 use App\Msg;
+use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class AdminController extends Controller
         $mwhere = ['userid'=>$userid,'type'=>2];
         $mcount =  Keyword::where($mwhere)->get()->count();
         $msg = Msg::all();
-        return view('welcome',compact('pcount','mcount','msg'));
+        $user = User::find($userid);
+        return view('welcome',compact('pcount','mcount','msg','user'));
     }
 
     public function youhua($id)
