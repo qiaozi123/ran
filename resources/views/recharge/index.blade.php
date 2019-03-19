@@ -14,7 +14,7 @@
 <body>
 <div class="x-body layui-anim layui-anim-up">
 
-    <div align="center"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=719575620,2028521320&fm=26&gp=0.jpg" />
+    <div align="center"><img  style="height: 400px" src="/images/pay.jpg" />
 
     </div>
     <div align="center">

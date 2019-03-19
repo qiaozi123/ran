@@ -45,4 +45,6 @@ Route::get('zzz', 'RankController@zzz');
 
 Route::get('baidu', 'BaiduController@pc');
 
+Route::get('paimin', 'PaiminController@index');
+
 

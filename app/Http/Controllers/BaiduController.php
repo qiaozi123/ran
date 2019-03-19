@@ -78,4 +78,12 @@ class BaiduController extends Controller
         return $rewrite ;//输出http://tieba.baidu.com/p/1668410830
     }
 
+    public function pc_rank()
+    {
+        $keyword = "Admin";
+        $url ='https://www.baidu.com/s?cl=3&tn=baidutop10&fr=top1000&wd=&rsv_idx=2&rsv_dl=fyb_n_homepage';
+
+
+    }
+
 }
