@@ -55,9 +55,9 @@
                                     </li>
                                     <li class="layui-col-xs2">
                                         <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>排名币余额</h3>
+                                            <h3>积分余额</h3>
                                             <p>
-                                                <cite>67</cite></p>
+                                                <cite>{{$user->coin}}</cite></p>
                                         </a>
                                     </li>
                                 </ul>

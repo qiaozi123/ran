@@ -22,14 +22,14 @@
                 <tr>
                     <th>产品编号</th>
                     <td>描述</td>
-                    <td>排名币</td>
+                    <td>积分</td>
                     <td>原价</td>
                     <td>优惠价</td>
                     <td>购买</td>
                 </tr>
-                @foreach($price as $item)
+                @foreach($price as $key=>$item)
                 <tr>
-                    <th>{{$item->id}}</th>
+                    <th>{{$key+1}}</th>
                     <td>{{$item->desc}}</td>
                     <td>{{$item->rankcoin}}</td>
                     <td>{{$item->price}}</td>
