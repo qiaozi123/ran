@@ -83,7 +83,12 @@ class BaiduController extends Controller
         $keyword = "Admin";
         $url ='https://www.baidu.com/s?cl=3&tn=baidutop10&fr=top1000&wd=&rsv_idx=2&rsv_dl=fyb_n_homepage';
 
+    }
 
+    public function move_push()
+    {
+        $url ='https://www.baidu.com/s?cl=3&tn=baidutop10&fr=top1000&wd=&rsv_idx=2&rsv_dl=fyb_n_homepage';
+        
     }
 
 }
