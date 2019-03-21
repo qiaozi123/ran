@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.1.3",
         "bican/roles": "2.1.*",
-        "dingo/api": "2.0.0-beta1",
+        "dingo/api": "^2.2",
         "fideloper/proxy": "^4.0",
         "jaeger/querylist": "~V4",
         "jaeger/querylist-rule-baidu": "^4.0",

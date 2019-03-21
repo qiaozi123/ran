@@ -49,20 +49,17 @@
             <td>
                 <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item->id}}'><i class="layui-icon">&#xe605;</i></div>
             </td>
-            <td>{{$item->id}}</td>
+            <td id="keyword{{$item->id}}">{{$item->id}}</td>
             <td>{{\App\SearchEngines::getsearchengines($item->searchengines)->name}}</td>
             <td>{{$item->keyword}}</td>
             <td>{{$item->dohost}}</td>
             <td>{{$item->rank}}</td>
-            <td>@if($item->newrank ==0) 暂未优化 @else {{$item->newrank}} @endif</td>
+            <td>@if($item->newrank ==0) 暂未上升 @else {{$item->newrank}} @endif</td>
             <td>{{$item->created_at}}</td>
-            <td>@if($item->status==0)未优化 @elseif($item->status==1)<span style="color: red">优化中</span> @elseif($item->status == 2) 暂停优化  @endif </td>
+            <td id="status{{$item->id}}">@if($item->status==0)未优化 @elseif($item->status==1)<span style="color: red">优化中</span> @elseif($item->status == 2) 暂停优化  @endif </td>
             <td class="td-manage">
-                <a title="查看"  onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
+                <a title="确认优化"  onclick="optimize(this,{{$item->id}})" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>
-                </a>
-                <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                    <i class="layui-icon">&#xe640;</i>
                 </a>
             </td>
         </tr>
@@ -72,7 +69,6 @@
     </table>
     <div class="page">
         {{ $keyword->links() }}
-
     </div>
 
 </div>
@@ -121,6 +117,33 @@
             //发异步删除数据
             $(obj).parents("tr").remove();
             layer.msg('已删除!',{icon:1,time:1000});
+        });
+    }
+
+    function optimize(obj,id){
+        layer.confirm('确定开始优化?',function(index){
+            //发异步删除数据
+            // $(obj).parents("tr").remove();
+            $.ajax({
+                type:"post",//type可以为post也可以为get
+                url:"/api/keyword/updatestatus",
+                data:{"id": id, "status": 1,"type":1,"userid":{{\Illuminate\Support\Facades\Auth::user()->id}}},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
+                dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
+                async:false,
+                success:function(data){
+                    //发异步，把数据提交给php
+                    console.log(data.msg);
+                    if (data.status==200) {
+                        $("#status" + id).html("优化中");
+                        layer.msg(data.msg,{icon:1,time:1000});
+                    }else{
+                        layer.msg(data.msg,{icon:1,time:1000});
+                    }
+                },
+                error:function(data){
+
+                }
+            });
         });
     }
 
