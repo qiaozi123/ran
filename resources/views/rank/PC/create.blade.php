@@ -87,7 +87,7 @@
     <label for="L_repass" class="layui-form-label">
     </label>
     <button class="layui-btn" lay-filter="add" lay-submit="">
-        确认优化该词
+        确认添加该词
     </button>
 </div>
 </form>
