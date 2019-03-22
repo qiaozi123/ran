@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
+    <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
     <link rel="stylesheet" href="{{url('css/font.css')}}">
     <link rel="stylesheet" href="{{url('css/xadmin.css')}}">
 </head>

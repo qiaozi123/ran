@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{{url('css/font.css')}}">
     <link rel="stylesheet" href="{{url('css/xadmin.css')}}">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
     <script src="{{url('lib/layui/layui.js')}}" charset="utf-8"></script>
     <script type="text/javascript" src="{{url('js/xadmin.js')}}"></script>
 </head>
