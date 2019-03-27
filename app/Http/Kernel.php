@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckProxy;
+use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\MustbeAnAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -20,6 +22,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        CheckProxy::class,
+        CheckRole::class
     ];
 
     /**
@@ -61,7 +65,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' =>MustbeAnAdmin::class
+        'admin' =>MustbeAnAdmin::class,
+        'proxy' => CheckProxy::class,
+        'role' => CheckRole::class
     ];
 
     /**

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>上词计费管理系统</title>
+    <title>@if(empty($proxy))上词计费系统@else {{$proxy->title}}上词计费系统 @endif</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -17,7 +17,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="/home">词排名管理</a></div>
+    <div class="logo"><a href="/home">@if(empty($proxy))词排名管理@else {{$proxy->title}}排名管理 @endif</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -102,6 +102,79 @@
                     </li>
                 </ul>
             </li>
+            @if(\Illuminate\Support\Facades\Auth::check() && \App\User::role(\Illuminate\Support\Facades\Auth::user()->id,'admin'))
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe726;</i>
+                    <cite>权限管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/user">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>用户列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/role">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>角色列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/permission">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>权限列表</cite>
+                        </a>
+                    </li >
+                </ul>
+            </li>
+            @endif
+
+            @if(\Illuminate\Support\Facades\Auth::check() && \App\User::role(\Illuminate\Support\Facades\Auth::user()->id,'proxy'))
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6ba;</i>
+                        <cite>我的用户</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a _href="/proxy/user/{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户列表</cite>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+            @if(\Illuminate\Support\Facades\Auth::check() && \App\User::role(\Illuminate\Support\Facades\Auth::user()->id,'proxy'))
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe696;</i>
+                        <cite>代理系统管理</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a _href="/proxy/system/{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>平台设置</cite>
+                            </a>
+                        </li>
+                        <li>
+                            <a _href="/proxy/recharge/{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>扣款设置</cite>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+
         </ul>
     </div>
 </div>

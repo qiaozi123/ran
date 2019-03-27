@@ -13,8 +13,7 @@
 </head>
 <body>
 <div class="x-body layui-anim layui-anim-up">
-    <blockquote class="layui-elem-quote">欢迎用户：
-        <span class="x-red">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>！当前时间:{{date('Y-m-d h:i:s')}}</blockquote>
+    <blockquote class="layui-elem-quote">欢迎用户:<span class="x-red">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>！    权限 : <span class="x-red">{{\App\User::roledata(\Illuminate\Support\Facades\Auth::user()->id)->name}}</span></blockquote>
     <fieldset class="layui-elem-field">
         <legend>数据一览</legend>
         <div class="layui-field-box">

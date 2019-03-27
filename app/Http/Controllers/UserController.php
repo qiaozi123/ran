@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\CoinMark;
 use App\Http\Requests\UserLoginRequest;
+use App\Proxy;
 use App\User;
+use App\UserRole;
+use Bican\Roles\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,13 +15,13 @@ use Nexmo\Client\Exception\Validation;
 
 class UserController extends Controller
 {
-
     public function index()
     {
         if (!Auth::check()){
             return redirect('/');
         }
-        return view('index');
+        $proxy = Proxy::check();
+        return view('index',compact('proxy'));
     }
 
     public function login()
@@ -41,6 +45,7 @@ class UserController extends Controller
             'captcha.required'=>'验证不能为空',
             'captcha.captcha' => '验证码错误，请重试'
         ];
+
         $validator=$this->validate($request,$rules,$message);
         $captcha = $request->input('captcha');
         $username = $request->input('username');
@@ -64,6 +69,14 @@ class UserController extends Controller
 
     public function doregist(Request $request)
     {
+
+        $url = $_SERVER['HTTP_HOST'];
+        $proxy = Proxy::where(['proxy_host'=>$url])->first();
+        if (empty($proxy)){
+            $belongto = 0;
+        }else{
+            $belongto = $proxy->userid;
+        }
         $username = $request->input('name');
         $telphone = $request->input('telphone');
         $password = $request->input('password');
@@ -93,6 +106,7 @@ class UserController extends Controller
             'captcha.required'=>'验证不能为空',
             'captcha.captcha' => '验证码错误，请重试'
         ];
+
         $validator=$this->validate($request,$rules,$message);
         $user = new User();
         $user->name = $username;
@@ -100,10 +114,17 @@ class UserController extends Controller
         $user->password = Hash::make($password);
         $user->qq = $qq;
         $user->email = $email;
+        $user->belongto = $belongto;
         $bool = $user->save();
         if ($bool){
-            Auth::loginUsingId($user->id);
-            return redirect('/home');
+            $roleuser = new UserRole();
+            $roleuser->role_id = 3;
+            $roleuser->user_id = $user->id;
+            $roleuserbool = $roleuser->save();
+            if ($roleuserbool){
+                Auth::loginUsingId($user->id);
+                return redirect('/home');
+            }
         }else{
             return redirect('/regist')->with('errors','注册失败.请联系客服');
         }
@@ -145,4 +166,67 @@ class UserController extends Controller
             return 500;
         }
     }
+
+    public function list(Request $request)
+    {
+        $roleid = $request->input('roleid');
+        if (!empty($roleid)){
+            $user = UserRole::where(['role_id'=>$roleid])
+                ->join('users','user_id','users.id')
+                ->join('roles','roles.id','role_user.role_id')
+                ->select('users.id','users.name','users.qq','users.telphone','users.email','users.coin','users.m_coin','roles.name as rolename')
+                ->orderby('users.id','desc')
+                ->paginate(15);
+            return view('user.index',compact('user'));
+        }else{
+            $user = UserRole::where([])
+                ->join('users','user_id','users.id')
+                ->join('roles','roles.id','role_user.role_id')
+                ->select('users.id','users.name','users.qq','users.telphone','users.email','users.coin','users.m_coin','roles.name as rolename')
+                ->orderby('users.id','desc')
+                ->paginate(15);
+            return view('user.index',compact('user'));
+        }
+    }
+
+
+    public function recharge(Request $request)
+    {
+        $userid = $request->input('userid');
+        $user = User::find($userid);
+        return view('user.recharge.update',compact('user'));
+    }
+
+    public function dorecharge(Request $request)
+    {
+        $userid = $request->input('userid');
+        $coin = $request->input('coin');
+        $mcoin = $request->input('m_coin');
+        $update_people = $request->input('update_people');
+        if (empty($userid)){
+            return response()->json(['status'=>500,'msg'=>'userid不能为空']);
+        }
+        if ($coin == ""){
+            return response()->json(['status'=>500,'msg'=>'PC积分不能为空']);
+        }
+        if ($mcoin == ""){
+            return response()->json(['status'=>500,'msg'=>'移动积分不能为空']);
+        }
+        $user = User::find($userid);
+        $user->coin = $user->coin+$coin;
+        $user->m_coin = $user->m_coin+$mcoin;
+        $bool = $user->save();
+        if ($bool){
+            $coinmark = new CoinMark();
+            $coinmark->coin = $coin;
+            $coinmark->m_coin = $mcoin;
+            $coinmark->update_people = $update_people;
+            $coinmark->save();
+            return response()->json(['status'=>200,'msg'=>'添加积分成功']);
+        }else{
+            return response()->json(['status'=>500,'msg'=>'添加积分失败']);
+        }
+    }
+
+
 }
