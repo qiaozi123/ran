@@ -48,6 +48,7 @@ Route::post('proxy/system','ProxyController@dosystem');
 Route::get('proxy/recharge/{id}','ProxyController@recharge');
 Route::post('proxy/recharge','ProxyController@dorecharge');
 Route::get('proxy/user/{id}','ProxyController@user');
+Route::post('proxy/user/mark/update','ProxyController@usermarkupdate');
 
 
 

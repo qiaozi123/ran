@@ -73,10 +73,25 @@ class ProxyController extends Controller
         $user = UserRole::where(['belongto'=>$userid])
             ->join('users','user_id','users.id')
             ->join('roles','roles.id','role_user.role_id')
-            ->select('users.id','users.name','users.qq','users.telphone','users.email','users.coin','users.m_coin','roles.name as rolename')
+            ->select('users.id','users.name','users.qq','users.telphone','users.email','users.coin','users.m_coin','users.mark','roles.name as rolename')
             ->orderby('users.id','desc')
             ->paginate(15);
         return view('proxy.user.index',compact('user'));
+    }
+
+
+    public function usermarkupdate(Request $request) //代理角色添加角色的备注
+    {
+        $userid = $request->input('userid');
+        $mark = $request->input('mark');
+        $user = User::find($userid);
+        $user->mark = $mark;
+        $bool = $user->save();
+        if ($bool){
+            return response()->json(['status'=>200,'msg'=>$user->mark]);
+        }else{
+            return response()->json(['status'=>500,'msg'=>'备注插入失败']);
+        }
     }
 
 }

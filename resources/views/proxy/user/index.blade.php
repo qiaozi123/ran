@@ -12,6 +12,7 @@
     <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('lib/layui/layui.js')}}" charset="utf-8"></script>
     <script type="text/javascript" src="{{url('js/xadmin.js')}}"></script>
+    <meta name="x-csrf-token" content="{{ csrf_token() }}">
     <![endif]-->
 </head>
 
@@ -35,6 +36,7 @@
             <th>PC积分</th>
             <th>移动积分</th>
             <th>角色</th>
+            <th>备注</th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +53,7 @@
                 <td>{{$item->coin}}</td>
                 <td>{{$item->m_coin}}</td>
                 <td>{{$item->rolename}}</td>
+                <td><input value="{{$item->mark}}" id="mark{{$item->id}}" >  <input type="button" value="添加备注" onclick="setmark({{$item->id}})"></td>
             </tr>
         @endforeach
         </tbody>
@@ -61,6 +64,11 @@
 
 </div>
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     layui.use('laydate', function(){
         var laydate = layui.laydate;
 
@@ -75,51 +83,29 @@
         });
     });
 
-    /*用户-停用*/
-    function member_stop(obj,id){
-        layer.confirm('确认要停用吗？',function(index){
+    function setmark(id){
+        mark = $('#mark'+id).val();
+        $.ajax({
+            type:"post",//type可以为post也可以为get
+            url:"/proxy/user/mark/update",
+            data:{'userid':id,'mark':mark,'_token':'{{csrf_token() }}'},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
+            dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
+            async:false,
+            success:function(data){
+                //发异步，把数据提交给php
+                // if (data==200){
+                layer.alert("备注添加成功", {icon: 6},function () {
+                    // 获得frame索引
+                    window.location.reload();
+                });
+            },
+            error:function(data){
 
-            if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-            }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
             }
-
-        });
-    }
-
-    /*用户-删除*/
-    function member_del(obj,id){
-        layer.confirm('确认要删除吗？',function(index){
-            //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!',{icon:1,time:1000});
         });
     }
 
 
-
-    function delAll (argument) {
-
-        var data = tableCheck.getData();
-
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
-    }
 </script>
 <script>var _hmt = _hmt || []; (function() {
         var hm = document.createElement("script");
