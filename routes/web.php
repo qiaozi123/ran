@@ -37,6 +37,9 @@ Route::get('permission/create','PermissionController@create');
 Route::post('permission/create','PermissionController@docreate');
 
 
+Route::get('keyword', 'KeywordController@index');
+
+
 
 
 //代理权限
