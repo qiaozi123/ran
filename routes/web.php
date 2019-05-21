@@ -19,6 +19,23 @@ Route::group(['middleware' => ['role']], function () {
     Route::get('home', 'UserController@index');
 });
 
+//任务管理
+Route::get('task/list','TaskController@list');//任务列表页面
+Route::get('task/piliang','TaskController@piliang'); //批量提交任务页面
+Route::post('task/piliang','TaskController@dopiliang'); //批量提交任务接口
+Route::get('task/update','TaskController@update');  //修改任务页面
+Route::post('task/update','TaskController@doupdate'); //修改任务接口
+Route::post('task/delete','TaskController@delete');//删除任务接口
+Route::post('task/updatestatus','TaskController@updatestatus');//修改任务状态接口
+Route::post('task/updatestatus_many','TaskController@updatestatus_many');//修改任务状态接口
+
+Route::get('task/one','TaskController@one');  //增加一个任务
+Route::post('task/create','TaskController@docreate');//创建一个任务
+
+
+//任务导出excel
+Route::get('excel/export','ExcelController@task');
+
 
 Route::get('role','RoleController@index');
 Route::get('role/create','RoleController@create');

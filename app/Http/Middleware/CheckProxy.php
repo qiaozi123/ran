@@ -21,7 +21,8 @@ class CheckProxy
         if (!empty($data)){
             return $next($request);
         }else{
-            dd("您还不是代理，不允许解析到该服务器.请联系管理员");
+            return $next($request);
+//            dd("您还不是代理，不允许解析到该服务器.请联系管理员");
         }
     }
 }

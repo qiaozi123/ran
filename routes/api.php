@@ -31,5 +31,8 @@ $api->version('v1', function ($api) {  //User接口
     $api->group(['namespace' => 'App\Api\Controllers'], function ($api) {
         $api->post('keyword','KeywordController@index');
         $api->post('keyword/updatestatus','KeywordController@updatestatus');
+        $api->post('run','RunController@remote');
+
+
     });
 });

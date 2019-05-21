@@ -36,8 +36,8 @@ class User extends Authenticatable
 
     public static function role($userid, $slug) //验证用户是什么角色
     {
-        $role = Role::where(['slug'=>$slug])->first();
-        $res = UserRole::where(['role_id'=>$role->id,'user_id'=>$userid])->first();
+        $res = UserRole::where(['user_id'=>$userid,'roles.slug'=>$slug])
+            ->join('roles','role_user.role_id','=','roles.id')->first();
         if (empty($res)){
             return false;
         }else{
