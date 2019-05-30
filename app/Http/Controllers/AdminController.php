@@ -23,12 +23,14 @@ class AdminController extends Controller
     public function show()
     {
         $userid = Auth::user()->id;
-        $pwhere = ['userid'=>$userid,'type'=>1];
-        $pcount =  Keyword::where($pwhere)->get()->count();
-        $mwhere = ['userid'=>$userid,'type'=>2];
-        $mcount =  Keyword::where($mwhere)->get()->count();
+        $pwhere = ['userid'=>$userid,'status'=>0];
+        $weiyouhua =  Keyword::where($pwhere)->get()->count();
+        $mwhere = ['userid'=>$userid,'status'=>1];
+        $youhuazhong =  Keyword::where($mwhere)->get()->count();
+        $mwhere = ['userid'=>$userid,'status'=>2];
+        $zhantingzhong =  Keyword::where($mwhere)->get()->count();
         $msg = Msg::all();
         $user = User::find($userid);
-        return view('welcome',compact('pcount','mcount','msg','user'));
+        return view('welcome',compact('weiyouhua','youhuazhong','zhantingzhong','msg','user'));
     }
 }

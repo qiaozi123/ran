@@ -25,18 +25,18 @@
                                 <ul class="layui-row layui-col-space10 layui-this">
                                     <li class="layui-col-xs2">
                                         <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>PC优化总词数</h3>
+                                            <h3>优化中的任务</h3>
                                             <p>
-                                                <cite>{{$pcount}}</cite></p>
+                                                <cite>{{$youhuazhong}}</cite></p>
                                         </a>
                                     </li>
 
 
                                     <li class="layui-col-xs2">
                                         <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>移动优化总词数</h3>
+                                            <h3>暂停的任务</h3>
                                             <p>
-                                                <cite>{{$mcount}}</cite></p>
+                                                <cite>{{$zhantingzhong}}</cite></p>
                                         </a>
                                     </li>
 

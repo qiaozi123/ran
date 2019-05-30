@@ -17,7 +17,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="/home">@if(empty($proxy))词排名管理@else {{$proxy->title}}排名管理 @endif</a></div>
+    <div class="logo"><a href="/home">@if(empty($proxy))排名管理@else {{$proxy->title}}排名管理 @endif</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -321,7 +321,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">上词计费管理系统</div>
+    <div class="copyright">白帽子点击管理系统</div>
 </div>
 <!-- 底部结束 -->
 </body>
