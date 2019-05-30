@@ -23,8 +23,6 @@
                     <th>产品编号</th>
                     <td>描述</td>
                     <td>积分</td>
-                    <td>原价</td>
-                    <td>优惠价</td>
                     <td>购买</td>
                 </tr>
                 @foreach($price as $key=>$item)
@@ -32,8 +30,6 @@
                     <th>{{$key+1}}</th>
                     <td>{{$item->desc}}</td>
                     <td>{{$item->rankcoin}}</td>
-                    <td>{{$item->price}}</td>
-                    <td>{{$item->preferential}}</td>
                     <td><a href="/recharge"><input type="button" value="充值"></a></td>
                 </tr>
                 @endforeach
