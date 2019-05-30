@@ -96,7 +96,7 @@
                                         parent.layer.close(index);
                                     });
                                 }else{
-                                    lay.alert(data)
+                                    layer.alert(data.msg, {icon: 2});
                                 }
                             },
                             error:function(data){
@@ -106,7 +106,6 @@
                         return false
 
                     });
-
 
                 });
             </script>
@@ -119,7 +118,7 @@
                                 <tbody>
                                 <tr>
                                     <th>1</th>
-                                    <td>格式：关键词>网址>日最大点击量</td>
+                                    <td>格式：关键词>网址>熊掌号>日最大点击量</td>
                                 </tr>
                                 <tr>
                                     <th>2</th>
@@ -145,19 +144,19 @@
                                 <tbody>
                                 <tr>
                                     <th>1</th>
-                                    <td>淘宝网>www.taobao.com>30</td>
+                                    <td>淘宝网>www.taobao.com>熊掌号>30</td>
                                 </tr>
                                 <tr>
                                     <th>2</th>
-                                    <td>淘宝商城>www.taobao.com>20</td>
+                                    <td>淘宝商城>www.taobao.com>熊掌号>20</td>
                                 </tr>
                                 <tr>
                                     <th>3</th>
-                                    <th>网上购物>www.taobao.com>10</th>
+                                    <th>网上购物>www.taobao.com>熊掌号>10</th>
                                 <tr>
                                 <tr>
                                     <th>4</th>
-                                    <th>淘宝购物>www.taobao.com>35</th>
+                                    <th>淘宝购物>www.taobao.com>熊掌号>35</th>
                                 <tr>
 
                                 </tbody>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Keyword;
 use App\Rank;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,20 +22,22 @@ class TaskController extends Controller
         $rank = $request->input('rank');
         $dohost = $request->input('dohost');
         $userid = Auth::user()->id;
-
+        $status_0 = Keyword::where(['userid'=>$userid])->get()->count();
+        $status_1 = Keyword::where(['userid'=>$userid,'status'=>1])->get()->count();
+        $status_2 = Keyword::where(['userid'=>$userid,'status'=>2])->get()->count();
         if (!empty($keyword)){
             $data = Keyword::where(['userid'=>$userid,'keyword'=>$keyword])
                 ->join('searchengines','searchengines.id','=','keywords.searchengines')
                 ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
                 ->paginate(15);
-            return view('task.list',compact('data'));
+            return view('task.list',compact('data','status_0','status_1','status_2'));
         }
         $data = Keyword::where(['userid'=>$userid])
             ->join('searchengines','searchengines.id','=','keywords.searchengines')
             ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
             ->paginate(15);
 
-        return view('task.list',compact('data'));
+        return view('task.list',compact('data','status_0','status_1','status_2'));
     }
 
     public function piliang()
@@ -57,7 +60,8 @@ class TaskController extends Controller
         foreach ($data as $key=>$item){
             $renwu[$key]['keyword'] = explode('>',$item)[0];
             $renwu[$key]['dohost'] = explode('>',$item)[1];
-            $renwu[$key]['click'] = explode('>',$item)[2];
+            $renwu[$key]['xzh'] = explode('>',$item)[2];
+            $renwu[$key]['click'] = explode('>',$item)[3];
             $renwu[$key]['searchengines'] = $searchengineid;
             $renwu[$key]['status'] = 0;
             $renwu[$key]['type'] = 0;
@@ -65,8 +69,18 @@ class TaskController extends Controller
             $renwu[$key]['created_at'] = date('Y-m-d h:i:s');
             $renwu[$key]['updated_at'] = date('Y-m-d h:i:s');
         }
+        $coin_array = array_column($renwu,'click');
+        $allcoin = array_sum($coin_array);
+
+        $user = User::find($userid);
+        if ($user->coin - $allcoin<0){
+            return response()->json(['status'=>500,'msg'=>'积分不足,请充值。']);
+        }
         $res = DB::table('keywords')->insert($renwu);
         if ($res){
+            $user = User::find($userid);
+            $user->coin = $user->coin - count($renwu);
+            $user->save();
             return response()->json(['status'=>200,'msg'=>'任务批量添加成功']);
         }else{
             return response()->json(['status'=>500,'msg'=>'任务批量添加失败']);
@@ -87,6 +101,7 @@ class TaskController extends Controller
         $keyword_id = $request->input('keyword_id');
         $keyword = $request->input('keyword');
         $dohost = $request->input('dohost');
+        $xzh = $request->input('xzh');
         $click = $request->input('click');
         if ($searchengines ==""){
             return '搜索引擎不能为空';
@@ -110,10 +125,16 @@ class TaskController extends Controller
         if (empty($bool)){
             return '没有该任务,非法操作';
         }
+        $user = User::find($userid);
+        if ($user->coin - $bool->click < 0){
+            return response()->json(['status'=>500,'msg'=>'积分不足,无法修改任务']);
+        }
+
         $bool->keyword = $keyword;
         $bool->dohost = $dohost;
         $bool->keyword = $keyword;
         $bool->click = $click;
+        $bool->xzh = $xzh;
         $res = $bool->save();
         if ($res){
             return response()->json(['status'=>200,'msg'=>'修改成功']);
@@ -157,6 +178,10 @@ class TaskController extends Controller
         $bool = Keyword::where(['userid'=>$userid,'id'=>$id])->first(); //该用户是否拥有该任务
         if (empty($bool)){
             return '没有该任务,非法操作';
+        }
+        $user = User::find($userid);
+        if ($user->coin - $bool->click < 0){
+            return response()->json(['status'=>500,'msg'=>'积分不足,无法操作任务']);
         }
         $bool->status = $status;
         $res = $bool->save();
@@ -207,6 +232,7 @@ class TaskController extends Controller
         $searchengineid =$request->input('searchengineid');
         $keywords = $request->input('keywords');
         $dohost = $request->input('dohost');
+        $xzh = $request->input('xzh');
         $click = $request->input('click');
         if (empty($searchengineid)){
             return "收索引擎不能为空";
@@ -226,10 +252,17 @@ class TaskController extends Controller
             $data[$key]['click'] =$click;
             $data[$key]['searchengines'] =$item;
             $data[$key]['status'] =0;
+            $data[$key]['xzh'] =$xzh;
             $data[$key]['userid'] =$userid;
             $data[$key]['created_at'] =date('Y-m-d H:i:s');
             $data[$key]['updated_at'] =date('Y-m-d H:i:s');
         }
+
+        $user = User::find($userid);
+        if ($user->coin - $click<0){
+            return response()->json(['status'=>500,'msg'=>'积分不足,请充值。']);
+        }
+
         $bool = DB::table('keywords')->insert($data);
         if ($bool){
             return response()->json(['status'=>200,'msg'=>'单个任务创建成功']);

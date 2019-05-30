@@ -4,6 +4,7 @@ namespace App\Api\Controllers;
 
 use App\Keyword;
 use App\Renwu;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class RunController extends Controller
         $time = date('Y-m-d');
         $data = Renwu::where('created_at','like','%'.$time.'%')->where(['status'=>0])->first();
         if (empty($data)){
-            $today = Keyword::where(['status'=>1])->select('dohost','keyword','click','xzh')->get()->toArray();
+            $today = Keyword::where(['status'=>1])->select('dohost','keyword','click','xzh','userid','id as keyword_id')->get()->toArray();
             foreach ($today as $key=>$item){
                 $today[$key]['created_at'] =  date('Y-m-d H:i:s');
                 $today[$key]['updated_at'] =  date('Y-m-d H:i:s');
@@ -27,9 +28,18 @@ class RunController extends Controller
             $renwu->status = 1;
             $renwu->save();
         }
+        //任务的点击次数+1
         $one = Renwu::where('created_at','like','%'.$time.'%')->where(['status'=>0])->first();
         $one->has_click = $one->has_click +1;
         $one->save();
+//        //关键词表的点击次数+1
+//        $keyword = Keyword::where(['id'=>$renwu->userid])->first();
+//        $keyword->has_click = $keyword->has_click +1;
+//        $keyword->save();
+        //积分-1
+        $user = User::find($renwu->userid);
+        $user->coin = $user->coin -1;
+        $user->save();
         return $one;
     }
 }

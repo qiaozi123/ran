@@ -58,6 +58,16 @@
 
         <div class="layui-form-item">
             <label for="L_repass" class="layui-form-label">
+                <span class="x-red">*</span>熊掌号
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="dohost" name="xzh"  value="@if(empty($data->xzh)){{$data->dohost}}  @else {{$data->xzh}} @endif"
+                       autocomplete="off" class="layui-input"> <b style="color: red">(若没有,默认为网址)</b>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
                 <span class="x-red">*</span>日点击
             </label>
             <div class="layui-input-inline">
@@ -121,8 +131,8 @@
                             parent.layer.close(index);
                         });
                     }else{
-                        lay.alert(data)
-                    }
+                        layer.alert(data.msg, {icon: 2});
+                }
                 },
                 error:function(data){
 

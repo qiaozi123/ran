@@ -53,6 +53,18 @@
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item layui-form-text" style="margin-top: 12px">
+                    <label for="desc" class="layui-form-label">
+                        <b >熊掌号</b>
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" id="click" name="xzh" value="" style="width: 250px" required="" lay-verify="count"
+                               autocomplete="off" class="layui-input">
+                        <b style="color: red">若没绑定熊掌号,请输入网址</b>
+                    </div>
+                </div>
+
                 <div class="layui-form-item layui-form-text" style="margin-top: 12px">
                     <label for="desc" class="layui-form-label">
                         <b >日点击</b>
@@ -113,7 +125,9 @@
 
                                     });
                                 }else{
-                                    lay.alert(data)
+                                    layer.alert(data.msg, {icon: 2},function () {
+
+                                    });
                                 }
                             },
                             error:function(data){

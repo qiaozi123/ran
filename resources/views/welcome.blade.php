@@ -30,13 +30,7 @@
                                                 <cite>{{$pcount}}</cite></p>
                                         </a>
                                     </li>
-                                    {{--<li class="layui-col-xs2">--}}
-                                        {{--<a href="javascript:;" class="x-admin-backlog-body">--}}
-                                            {{--<h3>PC优化上升词数</h3>--}}
-                                            {{--<p>--}}
-                                                {{--<cite><span style="color: red">↑</span>12</cite></p>--}}
-                                        {{--</a>--}}
-                                    {{--</li>--}}
+
 
                                     <li class="layui-col-xs2">
                                         <a href="javascript:;" class="x-admin-backlog-body">
@@ -45,28 +39,15 @@
                                                 <cite>{{$mcount}}</cite></p>
                                         </a>
                                     </li>
-                                    {{--<li class="layui-col-xs2">--}}
-                                        {{--<a href="javascript:;" class="x-admin-backlog-body">--}}
-                                            {{--<h3>移动优化上升词数</h3>--}}
-                                            {{--<p>--}}
-                                                {{--<cite><span style="color: red">↑</span>67</cite></p>--}}
-                                        {{--</a>--}}
-                                    {{--</li>--}}
+
                                     <li class="layui-col-xs2">
                                         <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>PC积分余额</h3>
+                                            <h3>积分</h3>
                                             <p>
                                                 <cite>{{$user->coin}}</cite></p>
                                         </a>
                                     </li>
-                                    <li class="layui-col-xs2">
-                                        <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>移动积分余额</h3>
-                                            <p>
-                                                <cite>{{$user->m_coin}}</cite>
-                                            </p>
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </div>
                         </div>
@@ -106,7 +87,7 @@
             </table>
         </div>
     </fieldset>
-    <blockquote class="layui-elem-quote layui-quote-nm">感谢林松,初心提供技术支持。</blockquote>
+    <blockquote class="layui-elem-quote layui-quote-nm">佛系 桔梗 大宝 KING （赞助商:执墨）</blockquote>
 </div>
 
 </body>

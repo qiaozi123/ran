@@ -17,7 +17,7 @@
 
 <body>
 <div class="x-nav">
-    任务列表(所有任务：0, 在线任务：0, 离线任务：0)
+    任务列表(所有任务：{{$status_0}}, 在线任务：{{$status_1}}, 离线任务：{{$status_2}})
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
@@ -74,10 +74,8 @@
             <th>初排</th>
             <th>新排</th>
             <th>变化</th>
-            <th>排名时间</th>
-            <th>日点</th>
-            <th>已点</th>
-            <th>添加时间</th>
+            {{--<th>排名时间</th>--}}
+            <th>每日点击</th>
             <th>状态</th>
             <th>操作</th>
         </tr>
@@ -92,15 +90,15 @@
             <td>{{$item->keyword}}</td>
             <td>{{$item->dohost}}</td>
             <td>{{$item->searchengines}}</td>
-            <td>{{$item->rank}}</td>
+            <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
 
-            <td>{{$item->rank}}</td>
-            <td>{{$item->rank}}</td>
-            <td>{{$item->rank}}</td>
+            <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
+            <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
+
+            {{--<td>@if(!empty($item->new_rank) || !empty($item->rank)) {{$item->new_rank - $item->rank}}  @else {{$item->new_rank}} @endif</td>--}}
+            {{--<td>{{$item->created_at}}</td>--}}
 
             <td>{{$item->click}}</td>
-            <td>{{$item->click}}</td>
-            <td>{{$item->created_at}}</td>
             <td class="td-status">@if($item->status==0)
                     <a onclick="member_stop(this,{{$item->id}})" href="javascript:;"  style="" title="未优化"><p style="color: red"><i class="layui-icon layui-icon-pause"></i>未优化</p></a>
                  @elseif($item->status ==1)
