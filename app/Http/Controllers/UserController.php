@@ -201,7 +201,6 @@ class UserController extends Controller
     {
         $userid = $request->input('userid');
         $coin = $request->input('coin');
-        $mcoin = $request->input('m_coin');
         $update_people = $request->input('update_people');
         if (empty($userid)){
             return response()->json(['status'=>500,'msg'=>'userid不能为空']);
@@ -209,17 +208,13 @@ class UserController extends Controller
         if ($coin == ""){
             return response()->json(['status'=>500,'msg'=>'PC积分不能为空']);
         }
-        if ($mcoin == ""){
-            return response()->json(['status'=>500,'msg'=>'移动积分不能为空']);
-        }
+
         $user = User::find($userid);
         $user->coin = $user->coin+$coin;
-        $user->m_coin = $user->m_coin+$mcoin;
         $bool = $user->save();
         if ($bool){
             $coinmark = new CoinMark();
             $coinmark->coin = $coin;
-            $coinmark->m_coin = $mcoin;
             $coinmark->update_people = $update_people;
             $coinmark->save();
             return response()->json(['status'=>200,'msg'=>'添加积分成功']);

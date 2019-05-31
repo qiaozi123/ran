@@ -19,9 +19,9 @@
 
 <div class="x-body">
     <xblock>
-        <button class="layui-btn "><a href="/user">所有用户</a></button>
+        <a href="/user"><button class="layui-btn ">所有用户</button></a>
         @foreach(\Bican\Roles\Models\Role::all() as $item)
-        <button class="layui-btn "><a href="/user?roleid={{$item->id}}">{{$item->name}}</a></button>
+            <a href="/user?roleid={{$item->id}}"><button class="layui-btn ">{{$item->name}}</button></a>
         @endforeach
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
                 <i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -37,8 +37,7 @@
             <th>手机号</th>
             <th>QQ号</th>
             <th>邮箱</th>
-            <th>PC积分</th>
-            <th>移动积分</th>
+            <th>积分</th>
             <th>角色</th>
             <th>操作</th>
         </tr>
@@ -50,12 +49,11 @@
                 <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item->id}}'><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td>{{$item->id}}</td>
-            <td><a title="当前用户:{{$item->name}}"  onclick="x_admin_show('当前用户:{{$item->name}}','/keyword?userid={{$item->id}}')" href="javascript:;">{{$item->name}}</a></td>
+            <td><a title="当前用户:{{$item->name}}"  style="color:red;" onclick="x_admin_show('当前用户:{{$item->name}}','/keyword/{{$item->id}}')" href="javascript:;">{{$item->name}}</a></td>
             <td>{{$item->qq}}</td>
             <td>{{$item->telphone}}</td>
             <td>{{$item->email}}</td>
             <td>{{$item->coin}}</td>
-            <td>{{$item->m_coin}}</td>
             <td>{{$item->rolename}}</td>
             <td class="td-manage">
                 <a title="用户积分充值"  onclick="x_admin_show('用户:{{$item->name}}  积分充值','/user/recharge?userid={{$item->id}}')" href="javascript:;">

@@ -11,10 +11,9 @@ use Illuminate\Support\Facades\Hash;
 class keywordController extends Controller
 {
 
-    public function index(Request $request)
+    public function index($id)
     {
-        $userid = $request->input('userid');
-        $where = ['userid'=>$userid,'status'=>1];
+        $where = ['userid'=>$id,'status'=>1];
         $keyword = Keyword::where($where)->paginate(15);
         return view('keyword.index',compact('keyword'));
     }

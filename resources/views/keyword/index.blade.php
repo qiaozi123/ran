@@ -32,7 +32,7 @@
             <th>关键词</th>
             <th>排名</th>
             <th>域名</th>
-            <th>排名端</th>
+
             <th>搜索引擎</th>
             <th>是否已经操作</th>
             <th>操作</th>
@@ -49,8 +49,7 @@
                 <td>{{$item->keyword}}</td>
                 <td>{{$item->rank}}</td>
                 <td>{{$item->dohost}}</td>
-                <td> @if($item->type ==1 ) PC端 @elseif($item->type ==2) 移动端 @endif</td>
-                <td>{{\App\SearchEngines::getsearchengines($item->searchengines)->name}}</td>
+                <td> {{\App\SearchEngines::find($item->searchengines)->name}}</td>
                 <td>
                     <a title="增加备注"  onclick="update_keyword_mark(this,{{$item->id}})" href="javascript:;">
                         点击确认优化

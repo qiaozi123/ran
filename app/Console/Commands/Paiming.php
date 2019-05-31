@@ -81,6 +81,7 @@ class Paiming extends Command
             $bool = $keyword->save();
             echo "任务id".$item->id.'执行完毕。 排名:'.$rank[$key1].PHP_EOL;
         }
+        echo '任务完成:'.date('Y-m-d H:i:s');
 
 
     }

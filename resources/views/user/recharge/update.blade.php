@@ -21,7 +21,7 @@
         {{csrf_field()}}
         <div class="layui-form-item">
             <label for="username" class="layui-form-label">
-                <span class="x-red">*</span>当前PC积分
+                <span class="x-red">*</span>当前积分
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="keyword"   disabled required="" value="{{$user->coin}}" lay-verify="required"
@@ -33,19 +33,11 @@
             </div>
             <div id="keyworderr" ></div>
         </div>
-        <div class="layui-form-item">
-            <label for="username" class="layui-form-label">
-                <span class="x-red">*</span>当前移动积分
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="dohost"  disabled value="{{$user->m_coin}}" required="" lay-verify="required"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
+
 
         <div class="layui-form-item">
             <label for="username" class="layui-form-label">
-                <span class="x-red">*</span>新增pc积分
+                <span class="x-red">*</span>新增积分
             </label>
             <div class="layui-input-inline">
                 <input type="number" id="dohost" name="coin" value="0" required="" lay-verify="required"
@@ -53,15 +45,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label for="username" class="layui-form-label">
-                <span class="x-red">*</span>新增移动积分
-            </label>
-            <div class="layui-input-inline">
-                <input type="number" id="dohost" name="m_coin" value="0" required="" lay-verify="required"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
+
 
         </tbody>
         </table>
