@@ -46,7 +46,7 @@ class Paiming extends Command
      */
     public function handle()
     {
-        $this->url = Keyword::where(['status'=>1])->get();
+        $this->url = Keyword::where(['status'=>1,'rank'=>""])->get();
         foreach ($this->url as $key1=>$item){
             set_time_limit(0);
             $ql = QueryList::getInstance();
