@@ -48,7 +48,7 @@ class Paiming extends Command
     {
         set_time_limit(0);
         ini_set('memory_limit', '504M');
-        $this->url = Keyword::where(['status'=>1,'rank'=>""])->get();
+        $this->url = Keyword::where(['status'=>1,'rank'=>null])->get();
         foreach ($this->url as $key1=>$item){
             $ql = QueryList::getInstance();
             $ql->use(Baidu::class);
