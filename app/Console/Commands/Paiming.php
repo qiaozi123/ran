@@ -54,7 +54,7 @@ class Paiming extends Command
             $ql->use(Baidu::class);
             $baidu = $ql->baidu(10);
             $searcher = $baidu->search($item->keyword);
-            $countPage = 80;  // 获取搜索结果总页数
+            $countPage = 20;  // 获取搜索结果总页数
             for ($page = 1; $page <= $countPage; $page++)
             {
                 $data= $searcher->page($page);
@@ -74,7 +74,7 @@ class Paiming extends Command
                 }
             }
             if (empty( $rank[$key1])){
-                $rank[$key1] = "800+";
+                $rank[$key1] = "200+";
             }
 
             $keyword = Keyword::find($this->url[$key1]->id);
