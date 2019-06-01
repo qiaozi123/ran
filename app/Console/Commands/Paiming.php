@@ -54,7 +54,7 @@ class Paiming extends Command
             $ql->use(Baidu::class);
             $baidu = $ql->baidu(10);
             $searcher = $baidu->search($item->keyword);
-            $countPage = 20;  // 获取搜索结果总页数
+            $countPage = 76;  // 获取搜索结果总页数
             for ($page = 1; $page <= $countPage; $page++)
             {
                 $data= $searcher->page($page);
@@ -83,7 +83,6 @@ class Paiming extends Command
             echo "任务id".$item->id.'执行完毕。 排名:'.$rank[$key1].PHP_EOL;
         }
         echo '任务完成:'.date('Y-m-d H:i:s');
-
 
     }
 

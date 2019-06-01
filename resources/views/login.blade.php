@@ -40,6 +40,7 @@
 
         <input name="captcha" style="float:left;width: 59%"   placeholder="验证码"  type="text" lay-verify="required" class="code" >
         <img class="getcode" src="{{url('captcha')}}" onclick="this.src='{{ url('captcha/mews') }}?r='+Math.random();">
+        <b style="color: red">（验证码输入错误请点击图片切换）</b>
         <hr class="hr15">
         <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
         <hr class="hr20" >

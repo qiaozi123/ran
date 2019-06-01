@@ -31,14 +31,18 @@ class RunController extends Controller
             $renwu->status = 1;
             $renwu->save();
         }else{
+            //积分-1
+            $user = User::find($renwu->userid);
+        if ($user->coin < 0){
+            $user->coin = $user->coin -1;
+            $user->save();
+        }
+
         //任务的点击次数+1
         $one = Renwu::where('created_at','like','%'.$time.'%')->where(['status'=>0])->first();
         $one->has_click = $one->has_click +1;
         $one->save();
-        //积分-1
-        $user = User::find($renwu->userid);
-        $user->coin = $user->coin -1;
-        $user->save();
+
         return $one;
         }
     }
