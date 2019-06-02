@@ -28,6 +28,7 @@ Route::post('task/update','TaskController@doupdate'); //修改任务接口
 Route::post('task/delete','TaskController@delete');//删除任务接口
 Route::post('task/updatestatus','TaskController@updatestatus');//修改任务状态接口
 Route::post('task/updatestatus_many','TaskController@updatestatus_many');//修改任务状态接口
+Route::post('task/delete_many','TaskController@delete_many');//批量删除任务接口
 
 Route::get('task/one','TaskController@one');  //增加一个任务
 Route::post('task/create','TaskController@docreate');//创建一个任务

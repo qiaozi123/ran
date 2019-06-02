@@ -23,9 +23,22 @@
         @foreach(\Bican\Roles\Models\Role::all() as $item)
             <a href="/user?roleid={{$item->id}}"><button class="layui-btn ">{{$item->name}}</button></a>
         @endforeach
+
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-                <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+                <i class="layui-icon" style="line-height:30px">ဂ</i>
+            </a>
     </xblock>
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input type="text" id="username" name="username"  value="@if(!empty($username)){{$username}} @else  @endif" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            <p class="layui-btn"  onclick="search_user()" ><i class="layui-icon"></i></p>
+            <script>
+                function search_user() {
+                    window.location.href = "/user?name="+$('#username').val();
+                }
+            </script>
+        </form>
+    </div>
     <table class="layui-table">
         <thead>
         <tr>
@@ -50,8 +63,8 @@
             </td>
             <td>{{$item->id}}</td>
             <td><a title="当前用户:{{$item->name}}"  style="color:red;" onclick="x_admin_show('当前用户:{{$item->name}}','/keyword/{{$item->id}}')" href="javascript:;">{{$item->name}}</a></td>
-            <td>{{$item->qq}}</td>
             <td>{{$item->telphone}}</td>
+            <td>{{$item->qq}}</td>
             <td>{{$item->email}}</td>
             <td>{{$item->coin}}</td>
             <td>{{$item->rolename}}</td>

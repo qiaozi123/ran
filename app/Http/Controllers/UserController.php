@@ -170,6 +170,18 @@ class UserController extends Controller
     public function list(Request $request)
     {
         $roleid = $request->input('roleid');
+        $username = $request->input('name');
+        if (!empty($username)){
+            $user = UserRole::where(['users.name'=>$username])
+                ->join('users','user_id','users.id')
+                ->join('roles','roles.id','role_user.role_id')
+                ->select('users.id','users.name','users.qq','users.telphone','users.email','users.coin','users.m_coin','roles.name as rolename')
+                ->orderby('users.id','desc')
+                ->paginate(15);
+            return view('user.index',compact('user','username'));
+        }
+
+
         if (!empty($roleid)){
             $user = UserRole::where(['role_id'=>$roleid])
                 ->join('users','user_id','users.id')

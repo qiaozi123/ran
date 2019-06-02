@@ -140,7 +140,6 @@ class TaskController extends Controller
             return response()->json(['status'=>200,'msg'=>'修改成功']);
         }else{
             return response()->json(['status'=>500,'msg'=>'修改失败']);
-
         }
     }
 
@@ -161,6 +160,32 @@ class TaskController extends Controller
         }else{
             return response()->json(['status'=>500,'msg'=>'删除失败']);
         }
+    }
+
+    public function delete_many(Request $request)
+    {
+        $id = $request->input('id');
+
+        if (empty($id)){
+            return '任务id不能为空';
+        }
+        $userid = Auth::user()->id;
+
+        $userkeyword = Keyword::where(['userid'=>$userid])->wherein('id',$id)->select('id')->get()->toArray(); //该用户是否拥有这些任务
+        if (empty($userkeyword)){
+            return response()->json(['status'=>500,'msg'=>'没有该任务,非法操作']);
+        }else{
+            foreach ($userkeyword as $item){
+                $deleteid[] = $item['id'];
+            }
+            $bool = Keyword::destroy($deleteid);
+            if ($bool){
+                return response()->json(['status'=>200,'msg'=>'删除成功']);
+            }else{
+                return response()->json(['status'=>500,'msg'=>'删除失败']);
+            }
+        }
+
     }
 
     public function updatestatus(Request $request)

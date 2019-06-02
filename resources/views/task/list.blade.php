@@ -27,6 +27,7 @@
         <button class="layui-btn layui-btn-danger" onclick="x_admin_show('批量添加','/task/piliang?userid={{\Illuminate\Support\Facades\Auth::user()->id}}')" href="javascript:;">批量添加</button>
         <button class="layui-btn layui-btn-danger"  onclick="piliang_run(this,0)" href="javascript:;" >批量运行</button>
         <button class="layui-btn layui-btn-danger"  onclick="piliang_stop(this,0)" href="javascript:;">批量停止</button>
+        <button class="layui-btn layui-btn-danger"  onclick="piliang_delete(this,0)" href="javascript:;">批量删除</button>
         {{--<button class="layui-btn layui-btn-danger">批量设点</button>--}}
         <button class="layui-btn layui-btn-danger"><a href="/excel/export" style="color: white">导出当前</a></button>
 
@@ -74,7 +75,7 @@
             <th>初排</th>
             <th>新排</th>
             <th>变化</th>
-            {{--<th>排名时间</th>--}}
+            <th>排名时间</th>
             <th>每日点击</th>
             <th>状态</th>
             <th>操作</th>
@@ -92,11 +93,9 @@
             <td>{{$item->searchengines}}</td>
             <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
 
-            <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
-            <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
-
-            {{--<td>@if(!empty($item->new_rank) || !empty($item->rank)) {{$item->new_rank - $item->rank}}  @else {{$item->new_rank}} @endif</td>--}}
-            {{--<td>{{$item->created_at}}</td>--}}
+            <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->rank}} @endif</td>
+            <td>@if(!empty($item->rank) || !empty($item->new_rank)) @if($item->rank - $item->new_rank > 0) <b style="color: red">{{$item->rank - $item->new_rank}} </b> @else <b style="color: green">{{ $item->new_rank - $item->rank  }} </b> @endif  @else 变化获取中 @endif</td>
+            <td>@if(empty($item->rank_time)) 等待新的排名时间中  @else {{$item->rank_time}} @endif</td>
 
             <td>{{$item->click}}</td>
             <td class="td-status">@if($item->status==0)
@@ -206,6 +205,42 @@
             });
         });
     }
+
+    //批量删除
+    function piliang_delete(obj,id) {
+        var data = tableCheck.getData();
+        if (data.length == 0){
+            layer.msg('没有任务选中', {
+                time: 2000, //2s后自动关闭
+            });
+            return
+        }
+
+        layer.confirm('是否删除选中任务.',function(index){
+            //发异步删除数据
+            $.ajax({
+                type:"post",//type可以为post也可以为get
+                url:"/task/delete_many",
+                data:{_token:"{{csrf_token()}}",id:['466','502','123'],status:2},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
+                dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
+                async:true,
+                success:function(data){
+                    //发异步，把数据提交给php
+                    if (data.status==200){
+                        layer.alert(data.msg, {icon: 6},function () {
+                            window.location.reload();
+                        });
+                    }else{
+                        lay.alert(data.msg)
+                    }
+                },
+                error:function(data){
+
+                }
+            });
+        });
+    }
+
 
     /*任务-停用-启用*/
     function member_stop(obj,id){
