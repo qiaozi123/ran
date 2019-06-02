@@ -19,9 +19,7 @@ class Paiming extends Command
      * @var string
      */
     protected $signature = 'rank:start';
-    private $totalPageCount;
-    private $counter        = 1;
-    private $concurrency    = 100;  // 同时并发抓取
+
     /**
      * The console command description.
      *
@@ -74,7 +72,7 @@ class Paiming extends Command
                 }
             }
             if (empty( $rank[$key1])){
-                $rank[$key1] = "200+";
+                $rank[$key1] = "760+";
             }
 
             $keyword = Keyword::find($this->url[$key1]->id);
