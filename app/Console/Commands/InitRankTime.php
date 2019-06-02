@@ -47,10 +47,7 @@ class InitRankTime extends Command
         set_time_limit(0);
         ini_set('memory_limit', '20M');
         $bool = Keyword::where([])->update(['today' => date('Y-m-d'),'today_status'=>0,'has_click'=>0]);
-        if ($bool){
-            return "每日点击初始化任务已经结束。影响任务数量:".$bool;
-        }
-
+        echo "每日点击初始化任务已经结束。影响任务数量:".$bool;
     }
 
 
