@@ -74,7 +74,7 @@
             <th>搜索引擎</th>
             <th>初排</th>
             <th>新排</th>
-            <th>变化</th>
+            {{--<th>变化</th>--}}
             <th>排名时间</th>
             <th>每日点击</th>
             <th>状态</th>
@@ -94,7 +94,7 @@
             <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
 
             <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->rank}} @endif</td>
-            <td>@if(!empty($item->rank) and !empty($item->new_rank)) @if(($item->rank - $item->new_rank) > 0) <b style="color: red">{{$item->rank - $item->new_rank}} </b> @else <b style="color: green">{{ $item->new_rank - $item->rank  }} </b> @endif  @else 变化获取中 @endif</td>
+            {{--<td>@if(!empty($item->rank) and !empty($item->new_rank)) @if(($item->rank - $item->new_rank) > 0) <b style="color: red">{{$item->rank - $item->new_rank}} </b> @else <b style="color: green">{{ $item->new_rank - $item->rank  }} </b> @endif  @else 变化获取中 @endif</td>--}}
             <td>@if(empty($item->rank_time)) 等待新的排名时间中  @else {{$item->rank_time}} @endif</td>
 
             <td>{{$item->click}}</td>
