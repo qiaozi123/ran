@@ -79,7 +79,7 @@ class NewRank extends Command
             $keyword->rank_time = date('H-m-d H:i:s');
             $bool = $keyword->save();
             if ($bool){
-                echo "任务id".$item->id.'执行完毕。 新排名排名:'.$rank[$key1]. "排名变化=》[".($keyword->rank - $rank[$key1])."]".PHP_EOL;
+                echo "任务id".$item->id.'执行完毕。 旧排名:'.$keyword->rank.'新排名排名:'.$rank[$key1].PHP_EOL;
             }
         }
         echo '任务完成:'.date('Y-m-d H:i:s');
