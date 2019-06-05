@@ -44,43 +44,48 @@ class NewRank extends Command
     public function handle()
     {
         set_time_limit(0);
-        ini_set('memory_limit', '504M');
+        ini_set('memory_limit', '1004M');
         $this->url = Keyword::where(['status'=>1])->get();
         foreach ($this->url as $key1=>$item){
-            $ql = QueryList::getInstance();
-            $ql->use(Baidu::class);
-            $baidu = $ql->baidu(10);
-            $searcher = $baidu->search($item->keyword);
-            $countPage = 76;  // 获取搜索结果总页数
-            for ($page = 1; $page <= $countPage; $page++)
-            {
-                $data= $searcher->page($page);
-                foreach ($data as $key=>$url){
-                    $reallink = $this->get_real_url($url['link']);
-                    if (strpos($reallink,$item->dohost) !== false){
-                        if ($page==1){
-                            $page=0;
+            try {
+                $ql = QueryList::getInstance();
+                $ql->use(Baidu::class);
+                $baidu = $ql->baidu(10);
+                $searcher = $baidu->search($item->keyword);
+                $countPage = 76;  // 获取搜索结果总页数
+                for ($page = 1; $page <= $countPage; $page++)
+                {
+                    $data= $searcher->page($page);
+                    foreach ($data as $key=>$url){
+                        $reallink = $this->get_real_url($url['link']);
+                        if (strpos($reallink,$item->dohost) !== false){
+                            if ($page==1){
+                                $page=0;
+                            }
+                            echo "page:".$page.PHP_EOL;
+                            $rank[$key1] = $page*10+$key+1;
+                            break ;
                         }
-                        echo "page:".$page.PHP_EOL;
-                        $rank[$key1] = $page*10+$key+1;
+                    }
+                    if (!empty( $rank[$key1])){
                         break ;
                     }
                 }
-                if (!empty( $rank[$key1])){
-                    break ;
+                if (empty( $rank[$key1])){
+                    $rank[$key1] = "760+";
                 }
-            }
-            if (empty( $rank[$key1])){
-                $rank[$key1] = "760+";
+
+                $keyword = Keyword::find($this->url[$key1]->id);
+                $keyword->new_rank = $rank[$key1];
+                $keyword->rank_time = date('H-m-d H:i:s');
+                $bool = $keyword->save();
+                if ($bool){
+                    echo "任务id".$item->id.'执行完毕。 旧排名:'.$keyword->rank.'新排名排名:'.$rank[$key1].PHP_EOL;
+                }
+            } catch (\Exception $e) {
+                echo "任务:".$item->id ."排名抓取错误";
             }
 
-            $keyword = Keyword::find($this->url[$key1]->id);
-            $keyword->new_rank = $rank[$key1];
-            $keyword->rank_time = date('H-m-d H:i:s');
-            $bool = $keyword->save();
-            if ($bool){
-                echo "任务id".$item->id.'执行完毕。 旧排名:'.$keyword->rank.'新排名排名:'.$rank[$key1].PHP_EOL;
-            }
         }
         echo '任务完成:'.date('Y-m-d H:i:s');
     }
