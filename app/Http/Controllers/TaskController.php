@@ -29,7 +29,7 @@ class TaskController extends Controller
         $status_1 = Keyword::where(['userid'=>$userid,'status'=>1])->get()->count();
         $status_2 = Keyword::where(['userid'=>$userid,'status'=>2])->get()->count();
 
-        if ($status ==3){
+        if ($status ==3 or empty($status)){
             if (!empty($keyword and empty($dohost))){
                 $data = Keyword::where(['userid'=>$userid])
                     ->where('keyword','like','%'.$keyword.'%')
