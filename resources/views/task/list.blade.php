@@ -55,7 +55,7 @@
             <div class="layui-input-inline">
                 <select name="status">
                     <option value="3" @if($status == 3 or empty($status)) selected @endif>所有状态</option>
-                    <option value="0"  @if($status == 0 ) selected @endif>未优化</option>
+                    <option value="0"  @if($status === 0 ) selected @endif>未优化</option>
                     <option value="1"  @if($status == 1 ) selected @endif>优化中</option>
                     <option value="2"  @if($status == 2 ) selected @endif>暂停优化</option>
                 </select>
