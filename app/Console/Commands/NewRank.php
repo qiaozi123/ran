@@ -74,7 +74,7 @@ class NewRank extends Command
                 if (empty( $rank[$key1])){
                     $rank[$key1] = "760+";
                 }
-
+                $ql->destruct();
                 $keyword = Keyword::find($this->url[$key1]->id);
                 $keyword->new_rank = $rank[$key1];
                 $keyword->rank_time = date('H-m-d H:i:s');

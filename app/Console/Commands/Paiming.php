@@ -75,7 +75,7 @@ class Paiming extends Command
                 if (empty( $rank[$key1])){
                     $rank[$key1] = "760+";
                 }
-
+                $ql->destruct();
                 $keyword = Keyword::find($this->url[$key1]->id);
                 $keyword->rank = $rank[$key1];
                 $bool = $keyword->save();
