@@ -79,6 +79,8 @@ class Paiming extends Command
                 $keyword = Keyword::find($this->url[$key1]->id);
                 $keyword->rank = $rank[$key1];
                 $bool = $keyword->save();
+                echo  "任务:".$key1.PHP_EOL;
+                echo  "任务id:".$item->id.'=>开始内存：'.(memory_get_usage()/8388608).PHP_EOL;
                 echo "任务id".$item->id.'执行完毕。 排名:'.$rank[$key1].PHP_EOL;
             } catch (\Exception $e) {
                echo "任务:".$item->id ."排名抓取错误";

@@ -19,25 +19,94 @@ class TaskController extends Controller
     {
         $keyword = $request->input('keyword');
         $status = $request->input('status');
-        $rank = $request->input('rank');
         $dohost = $request->input('dohost');
+        $limit = $request->input('limit');
+        if (empty($limit)){
+            $limit = 100;
+        }
         $userid = Auth::user()->id;
         $status_0 = Keyword::where(['userid'=>$userid])->get()->count();
         $status_1 = Keyword::where(['userid'=>$userid,'status'=>1])->get()->count();
         $status_2 = Keyword::where(['userid'=>$userid,'status'=>2])->get()->count();
-        if (!empty($keyword)){
-            $data = Keyword::where(['userid'=>$userid,'keyword'=>$keyword])
-                ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
-                ->paginate(15);
-            return view('task.list',compact('data','status_0','status_1','status_2'));
-        }
-        $data = Keyword::where(['userid'=>$userid])
-            ->join('searchengines','searchengines.id','=','keywords.searchengines')
-            ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
-            ->paginate(15);
 
-        return view('task.list',compact('data','status_0','status_1','status_2'));
+        if ($status ==3){
+            if (!empty($keyword and empty($dohost))){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('keyword','like','%'.$keyword.'%')
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+            if (!empty($dohost) and empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('dohost','like','%'.$dohost.'%')
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+
+            if (!empty($dohost) and !empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('keyword','like','%'.$keyword.'%')
+                    ->where('dohost','=',$dohost)
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+
+            if (empty($dohost) and empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+        }else{
+            if (!empty($keyword and empty($dohost))){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('keyword','like','%'.$keyword.'%')
+                    ->where('status','=',$status)
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+            if (!empty($dohost) and empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('dohost','like','%'.$dohost.'%')
+                    ->where('status','=',$status)
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+
+            if (!empty($dohost) and !empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->where('keyword','like','%'.$keyword.'%')
+                    ->where('dohost','=',$dohost)
+                    ->where('status','=',$status)
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+
+            if (empty($dohost) and empty($keyword)){
+                $data = Keyword::where(['userid'=>$userid])
+                    ->join('searchengines','searchengines.id','=','keywords.searchengines')
+                    ->where('status','=',$status)
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->paginate($limit);
+                return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
+            }
+        }
+
+
+
     }
 
     public function piliang()

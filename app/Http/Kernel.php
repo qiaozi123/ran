@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckProxy;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\MustbeAnAdmin;
@@ -67,7 +68,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' =>MustbeAnAdmin::class,
         'proxy' => CheckProxy::class,
-        'role' => CheckRole::class
+        'role' => CheckRole::class,
+        'checkauth' => CheckAuth::class
     ];
 
     /**

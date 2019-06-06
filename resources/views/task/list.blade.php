@@ -34,8 +34,8 @@
     </xblock>
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input type="text" name="keyword"  placeholder="关键词" autocomplete="off" class="layui-input">
-            <input type="text" name="dohost"  placeholder="网址" autocomplete="off" class="layui-input">
+            <input type="text" name="keyword"  value="{{$keyword}}" placeholder="关键词" autocomplete="off" class="layui-input">
+            <input type="text" name="dohost"  placeholder="网址" value="{{$dohost}}" autocomplete="off" class="layui-input">
 
             <div class="layui-input-inline">
                 <select name="contrller">
@@ -45,13 +45,19 @@
                 </select>
             </div>
             <div class="layui-input-inline">
-                <select name="rank">
-                    <option>排名情况</option>
+                <select name="limit">
+                    <option value="100" @if($limit == 100 ) selected @endif>每页100条</option>
+                    <option value="200" @if($limit == 200 ) selected @endif>每页200条</option>
+                    <option value="500" @if($limit == 500 ) selected @endif>每页500条</option>
+                    <option value="1000" @if($limit == 1000 ) selected @endif>每页1000条</option>
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select name="status">
-                    <option>所有状态</option>
+                    <option value="3" @if($status == 3 ) selected @endif>所有状态</option>
+                    <option value="0"  @if($status == 0 ) selected @endif>未优化</option>
+                    <option value="1"  @if($status == 1 ) selected @endif>优化中</option>
+                    <option value="2"  @if($status == 2 ) selected @endif>暂停优化</option>
                 </select>
             </div>
             <button class="layui-btn"  lay-submit="" onclick="search_keyword()" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -74,7 +80,6 @@
             <th>搜索引擎</th>
             <th>初排</th>
             <th>新排</th>
-            {{--<th>变化</th>--}}
             <th>排名时间</th>
             <th>每日点击</th>
             <th>状态</th>
@@ -94,7 +99,6 @@
             <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
 
             <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->rank}} @endif</td>
-            {{--<td>@if(!empty($item->rank) and !empty($item->new_rank)) @if(($item->rank - $item->new_rank) > 0) <b style="color: red">{{$item->rank - $item->new_rank}} </b> @else <b style="color: green">{{ $item->new_rank - $item->rank  }} </b> @endif  @else 变化获取中 @endif</td>--}}
             <td>@if(empty($item->rank_time)) 等待新的排名时间中  @else {{$item->rank_time}} @endif</td>
 
             <td>{{$item->click}}</td>
@@ -250,7 +254,7 @@
                 $.ajax({
                     type:"post",//type可以为post也可以为get
                     url:"/task/updatestatus",
-                    data:{id:id,_token:"{{csrf_token()}}",status:3},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
+                    data:{id:id,_token:"{{csrf_token()}}",status:2},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
                     dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
                     async:true,
                     success:function(data){

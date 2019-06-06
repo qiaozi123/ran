@@ -81,7 +81,8 @@ class NewRank extends Command
                 $keyword->rank_time = date('H-m-d H:i:s');
                 $bool = $keyword->save();
                 if ($bool){
-                    echo  "任务id:".$item->id.'=>开始内存：'.memory_get_usage()/8388608, '';
+                    echo  "任务:".$key1;
+                    echo  "任务id:".$item->id.'=>开始内存：'.(memory_get_usage()/8388608).PHP_EOL;
                     echo "任务id".$item->id.'执行完毕。 旧排名:'.$keyword->rank.'新排名排名:'.$rank[$key1].PHP_EOL;
                 }
             } catch (\Exception $e) {
