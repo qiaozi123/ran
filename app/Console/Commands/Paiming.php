@@ -45,7 +45,7 @@ class Paiming extends Command
     public function handle()
     {
         set_time_limit(0);
-        ini_set('memory_limit', '504M');
+        ini_set('memory_limit', '14M');
         $this->url = Keyword::where(['status'=>1,'rank'=>null])->get();
         foreach ($this->url as $key1=>$item){
             try {
