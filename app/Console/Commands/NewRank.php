@@ -44,7 +44,7 @@ class NewRank extends Command
     public function handle()
     {
         set_time_limit(0);
-        ini_set('memory_limit', '14M');
+        ini_set('memory_limit', '50M');
         $this->url = Keyword::where(['status'=>1])->get();
         echo '开始内存：'.memory_get_usage()/8388608, '';
         foreach ($this->url as $key1=>$item){
