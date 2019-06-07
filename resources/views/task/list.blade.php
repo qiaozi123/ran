@@ -98,7 +98,7 @@
             <td>{{$item->searchengines}}</td>
             <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
 
-            <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->rank}} @endif</td>
+            <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->new_rank}} @endif</td>
             <td>@if(empty($item->rank_time)) 等待新的排名时间中  @else {{$item->rank_time}} @endif</td>
 
             <td>{{$item->click}}</td>

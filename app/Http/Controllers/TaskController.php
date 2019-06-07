@@ -34,7 +34,7 @@ class TaskController extends Controller
                 $data = Keyword::where(['userid'=>$userid])
                     ->where('keyword','like','%'.$keyword.'%')
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -42,7 +42,7 @@ class TaskController extends Controller
                 $data = Keyword::where(['userid'=>$userid])
                     ->where('dohost','like','%'.$dohost.'%')
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -52,7 +52,7 @@ class TaskController extends Controller
                     ->where('keyword','like','%'.$keyword.'%')
                     ->where('dohost','=',$dohost)
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -60,7 +60,7 @@ class TaskController extends Controller
             if (empty($dohost) and empty($keyword)){
                 $data = Keyword::where(['userid'=>$userid])
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -70,7 +70,7 @@ class TaskController extends Controller
                     ->where('keyword','like','%'.$keyword.'%')
                     ->where('status','=',$status)
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -79,7 +79,7 @@ class TaskController extends Controller
                     ->where('dohost','like','%'.$dohost.'%')
                     ->where('status','=',$status)
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -90,7 +90,7 @@ class TaskController extends Controller
                     ->where('dohost','=',$dohost)
                     ->where('status','=',$status)
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
@@ -99,7 +99,7 @@ class TaskController extends Controller
                 $data = Keyword::where(['userid'=>$userid])
                     ->join('searchengines','searchengines.id','=','keywords.searchengines')
                     ->where('status','=',$status)
-                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click')
+                    ->select('searchengines.name as searchengines','keywords.id','keywords.keyword','keywords.dohost','keywords.status','keywords.rank','keywords.created_at','keywords.click','keywords.new_rank','keywords.rank_time')
                     ->paginate($limit);
                 return view('task.list',compact('data','status_0','status_1','status_2','keyword','dohost','status','limit'));
             }
