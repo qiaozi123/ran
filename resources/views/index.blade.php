@@ -122,6 +122,12 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
+                        <a _href="/user/hasrecharge">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>已充值用户</cite>
+                        </a>
+                    </li>
+                    <li>
                         <a _href="/user">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>用户列表</cite>
@@ -139,6 +145,12 @@
                             <cite>权限列表</cite>
                         </a>
                     </li >
+                    <li>
+                        <a _href="/keyword/today/{{date('Y-m-d')}}">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>今日已点任务列表</cite>
+                        </a>
+                    </li>
                 </ul>
             </li>
             @endif

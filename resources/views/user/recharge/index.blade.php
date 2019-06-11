@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>用户列表</title>
+    <title>充值用户列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -16,11 +16,9 @@
 </head>
 
 <body>
-<div class="x-nav">
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
+
 <div class="x-body">
+
 
     <table class="layui-table">
         <thead>
@@ -29,49 +27,42 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
             <th>id</th>
-            <th>关键词</th>
-            <th>域名</th>
-            <th>点击数</th>
-            <th>初排</th>
-            <th>新排</th>
-            <th>搜索引擎</th>
-            <th>查看任务历史</th>
-            <th>创建时间</th>
+            <th>用户名</th>
+            <th>手机号</th>
+            <th>QQ号</th>
+            <th>邮箱</th>
+            <th>积分</th>
+            <th>角色</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-
-        @foreach($keyword as $key=>$item)
+        @foreach($user as $key=>$item)
             <tr>
                 <td>
                     <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item->id}}'><i class="layui-icon">&#xe605;</i></div>
                 </td>
                 <td>{{$item->id}}</td>
-                <td>{{$item->keyword}}</td>
-                <td>{{$item->dohost}}</td>
-                <td>{{$item->click}}</td>
-                <td>{{$item->rank}}</td>
-                <td>{{$item->new_rank}}</td>
-                <td> {{\App\SearchEngines::find($item->searchengines)->name}}</td>
-                <td><a title="当前用户:{{$item->name}}"  style="color:red;" onclick="x_admin_show('任务:{{$item->id}}的点击历史','/keyword/history/{{$item->id}}')" href="javascript:;">查看点击历史</a></td>
-                <td>{{$item->created_at}}</td>
-
+                <td><a title="当前用户:{{$item->name}}"  style="color:red;" onclick="x_admin_show('当前用户:{{$item->name}}','/keyword/{{$item->id}}')" href="javascript:;">{{$item->name}}</a></td>
+                <td>{{$item->telphone}}</td>
+                <td>{{$item->qq}}</td>
+                <td>{{$item->email}}</td>
+                <td>{{$item->coin}}</td>
+                <td>{{$item->rolename}}</td>
                 <td class="td-manage">
-                    <a title="查看"  onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
-                        <i class="layui-icon">&#xe63c;</i>
+                    <a title="用户积分充值"  onclick="x_admin_show('用户:{{$item->name}}  积分充值','/user/recharge?userid={{$item->id}}')" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                        <i class="layui-icon">&#xe640;</i>
+                    <a title="修改用户权限"  onclick="x_admin_show('修改用户:{{$item->name}}  权限','/role/user/update?userid={{$item->id}}')" href="javascript:;">
+                        <i class="layui-icon">&#xe631;</i>
                     </a>
                 </td>
             </tr>
         @endforeach
-
         </tbody>
     </table>
     <div class="page">
-        {{ $keyword->links() }}
+        {{ $user->links() }}
     </div>
 
 </div>
@@ -123,13 +114,6 @@
         });
     }
 
-    function update_keyword_mark(obj,id) {
-        layer.confirm('确认该词优化状态备注？',function(index){
-            alert(id)
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!',{icon:1,time:1000});
-        });
-    }
 
 
     function delAll (argument) {
@@ -143,7 +127,12 @@
         });
     }
 </script>
-
+<script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();</script>
 </body>
 
 </html>

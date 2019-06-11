@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>用户列表</title>
+    <title>任务历史列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -22,6 +22,28 @@
 </div>
 <div class="x-body">
 
+    <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+        <input type="text" value="{{$time}}" class="layui-input" id="test1">
+        <button class="layui-btn " onclick="search()">搜索</button>
+        <script>
+            function search() {
+                time = $('#test1').val()
+                window.location.href = "/keyword/today/"+time;
+            }
+
+        </script>
+    </div>
+
+    <script>
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test1' //指定元素
+            });
+        });
+    </script>
     <table class="layui-table">
         <thead>
         <tr>
@@ -30,14 +52,9 @@
             </th>
             <th>id</th>
             <th>关键词</th>
-            <th>域名</th>
-            <th>点击数</th>
-            <th>初排</th>
-            <th>新排</th>
-            <th>搜索引擎</th>
-            <th>查看任务历史</th>
-            <th>创建时间</th>
-            <th>操作</th>
+            <th>点击总量</th>
+            <th>已点数量</th>
+            <th>时间</th>
         </tr>
         </thead>
         <tbody>
@@ -47,24 +64,11 @@
                 <td>
                     <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item->id}}'><i class="layui-icon">&#xe605;</i></div>
                 </td>
-                <td>{{$item->id}}</td>
+                <td>{{$item->keyword_id}}</td>
                 <td>{{$item->keyword}}</td>
-                <td>{{$item->dohost}}</td>
                 <td>{{$item->click}}</td>
-                <td>{{$item->rank}}</td>
-                <td>{{$item->new_rank}}</td>
-                <td> {{\App\SearchEngines::find($item->searchengines)->name}}</td>
-                <td><a title="当前用户:{{$item->name}}"  style="color:red;" onclick="x_admin_show('任务:{{$item->id}}的点击历史','/keyword/history/{{$item->id}}')" href="javascript:;">查看点击历史</a></td>
+                <td>{{$item->has_click}}</td>
                 <td>{{$item->created_at}}</td>
-
-                <td class="td-manage">
-                    <a title="查看"  onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
-                        <i class="layui-icon">&#xe63c;</i>
-                    </a>
-                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
-                </td>
             </tr>
         @endforeach
 

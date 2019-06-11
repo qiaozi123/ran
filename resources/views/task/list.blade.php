@@ -97,7 +97,6 @@
             <td>{{$item->dohost}}</td>
             <td>{{$item->searchengines}}</td>
             <td>@if(empty($item->rank)) 排名获取中  @else {{$item->rank}} @endif</td>
-
             <td>@if(empty($item->new_rank)) 请等待新排名  @else {{$item->new_rank}} @endif</td>
             <td>@if(empty($item->rank_time)) 等待新的排名时间中  @else {{$item->rank_time}} @endif</td>
 
@@ -225,7 +224,7 @@
             $.ajax({
                 type:"post",//type可以为post也可以为get
                 url:"/task/delete_many",
-                data:{_token:"{{csrf_token()}}",id:['466','502','123'],status:2},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
+                data:{_token:"{{csrf_token()}}",id:data,status:2},//这行不能省略，如果没有数据向后台提交也要写成data:{}的形式
                 dataType:"json",//这里要注意如果后台返回的数据不是json格式，那么就会进入到error:function(data){}中
                 async:true,
                 success:function(data){

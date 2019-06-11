@@ -47,6 +47,7 @@ Route::group(['middleware' => ['checkauth']], function () {
     Route::post('role/user/update','RoleController@douserupdate');
 
     Route::get('user', 'UserController@list');
+    Route::get('user/hasrecharge', 'UserController@hasrecharge');
     Route::get('user/recharge', 'UserController@recharge');
     Route::post('user/recharge', 'UserController@dorecharge');
     Route::get('user/info', 'UserController@info');
@@ -57,7 +58,9 @@ Route::group(['middleware' => ['checkauth']], function () {
     Route::post('permission/create','PermissionController@docreate');
 
     //关键词列表
+    Route::get('keyword/today/{time}', 'KeywordController@today');
     Route::get('keyword/{id}', 'KeywordController@index');
+    Route::get('keyword/history/{id}', 'KeywordController@history');
 
 
 
